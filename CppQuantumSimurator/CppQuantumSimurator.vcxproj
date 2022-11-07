@@ -131,7 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathLibrary.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="calculation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

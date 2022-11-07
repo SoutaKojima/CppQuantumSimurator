@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\CppQuantumSimurator"
   ],
-  "SelectedNode": "\\CppQuantumSimurator.sln",
+  "SelectedNode": "\\CppQuantumSimurator\\calculation.cpp",
   "PreviewInSolutionExplorer": false
 }

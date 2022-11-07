@@ -2,14 +2,6 @@
 
 namespace QuantumSystem
 {
-    class Qubit
-    {
-    public:
-        complex zero_ket, one_ket;
-        static Qubit Init();
-        static Qubit H(Qubit a);
-    };
-
     class complex {
     public:
         double re, im;
@@ -21,24 +13,13 @@ namespace QuantumSystem
         const complex operator/(const double& a) const;
     };
 
-    const complex complex::operator+(const complex& a)const {
-        complex tmp;
-        tmp.re = re + a.re;
-        tmp.im = im + a.im;
-        return tmp;
-    }
-
-    const complex complex::operator-(const complex& a)const {
-        complex tmp;
-        tmp.re = re - a.re;
-        tmp.im = im - a.im;
-        return tmp;
-    }
-
-    const complex complex::operator/(const double& a)const {
-        complex tmp;
-        tmp.re = re / a;
-        tmp.im = im / a;
-        return tmp;
-    }
+    class Qubit
+    {
+    public:
+        complex zero_ket, one_ket;
+        static Qubit Init();
+        static void Show(Qubit a);
+        static Qubit H(Qubit a);
+        static Qubit X(Qubit a);
+    };
 }

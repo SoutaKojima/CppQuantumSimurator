@@ -1,7 +1,7 @@
 #include <iostream>
 #include "MathLibrary.h"
 
-int main()
+int calc()
 {
     double a = 7.4;
     int b = 99;

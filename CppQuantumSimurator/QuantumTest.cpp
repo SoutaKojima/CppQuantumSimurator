@@ -6,26 +6,10 @@ int main()
 {
     int count = 0;
     Qubit q = q.Init();
-    q.Show();
-    
-    q.Init();
     q.H();
     q.Show(); 
     
-    q.Init();
-    q.X();
-    q.Show();
-    
-    q.Init();
-    q.X();
-    q.H();
-    q.Show();
-    
-    q.Init();
-    q.H();
-    q.H();
-    q.Show();
-    //q.Detection(100);
+    q.Detection(100000);
 
     return 0;
 }

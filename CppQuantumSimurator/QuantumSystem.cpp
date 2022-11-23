@@ -26,13 +26,20 @@ namespace QuantumSystem
 
     void Qubit::Detection(int n) {
         double zero_prob = zero_ket.norm();
+        int count[] = {0,0};
         std::random_device rd;
         std::default_random_engine eng(rd());
         std::uniform_real_distribution<double> distr(0, 1);
-        for (int i = 0; i < n; ++i) {
-            std::cout << distr(eng) << std::endl;
 
+        for (int i = 0; i < n; ++i) {
+            double r = distr(eng);
+            std::cout << (zero_prob > r ? 0 : 1);
+            ++count[(zero_prob > r ? 0 : 1)];
+            if (i % 10 == 9) std::cout << std::endl;
         }
+        std::cout << std::endl;
+        std::cout << "zero:" << count[0] << std::endl;
+        std::cout << " one:" << count[1] << std::endl;
     }
 
     void Qubit::H() {

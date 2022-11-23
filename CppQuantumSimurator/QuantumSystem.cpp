@@ -1,35 +1,54 @@
 #include "QuantumSystem.h"
 #include <math.h>
 #include <iostream>
+#include <random>
+#include <iomanip>
 
 namespace QuantumSystem
 {
     Qubit Qubit::Init() {
         Qubit q;
-        q.zero_ket = complex::set(1, 0);
-        q.one_ket = complex::set(0, 0);
+        complex c;
+        q.zero_ket = c.set(1, 0);
+        q.one_ket = c.set(0, 0);
+        zero_ket = q.zero_ket;
+        one_ket = q.one_ket;
         return q;
     }
 
-    void Qubit::Show(Qubit a) {
-        std::cout << "zero_ket re:" << a.zero_ket.re << " ";
-        std::cout << "zero_ket im:" << a.zero_ket.im << std::endl;
-        std::cout << "one_ket re:" << a.one_ket.re << " ";
-        std::cout << "one_ket im:" << a.one_ket.im << std::endl;
+    void Qubit::Show() {
+        std::cout << "zero_ket re:" << zero_ket.re << " ";
+        std::cout << "zero_ket im:" << zero_ket.im << std::endl;
+        std::cout << "one_ket re:" << one_ket.re << " ";
+        std::cout << "one_ket im:" << one_ket.im << std::endl;
+        std::cout << std::endl;
     }
 
-    Qubit Qubit::H(Qubit a) {
-        Qubit tmp = Qubit::Init();
-        tmp.zero_ket = (a.zero_ket + a.one_ket) / sqrt(2);
-        tmp.one_ket = (a.zero_ket - a.one_ket) / sqrt(2);
-        return tmp;
+    void Qubit::Detection(int n) {
+        double zero_prob = zero_ket.norm();
+        std::random_device rd;
+        std::default_random_engine eng(rd());
+        std::uniform_real_distribution<double> distr(0, 1);
+        for (int i = 0; i < n; ++i) {
+            std::cout << distr(eng) << std::endl;
+
+        }
     }
 
-    Qubit Qubit::X(Qubit a) {
-        Qubit tmp = Qubit::Init();
-        tmp.zero_ket = a.one_ket;
-        tmp.one_ket = a.zero_ket;
-        return tmp;
+    void Qubit::H() {
+        Qubit tmp = tmp.Init();
+        tmp.zero_ket = (zero_ket + one_ket) / sqrt(2);
+        tmp.one_ket = (zero_ket - one_ket) / sqrt(2);
+        zero_ket = tmp.zero_ket;
+        one_ket = tmp.one_ket;
+    }
+
+    void Qubit::X() {
+        Qubit tmp = tmp.Init();
+        tmp.zero_ket = one_ket;
+        tmp.one_ket = zero_ket;
+        zero_ket = tmp.zero_ket;
+        one_ket = tmp.one_ket;
     }
 
     complex complex::set(double a, double b) {
@@ -39,12 +58,12 @@ namespace QuantumSystem
         return tmp;
     }
 
-    double complex::norm(complex a) {
-        return a.re * a.re + a.im * a.im;
+    double complex::norm() {
+        return re * re + im * im;
     }
 
-    double complex::abs(complex a) {
-        return sqrt(complex::norm(a));
+    double complex::abs() {
+        return sqrt(norm());
     }
 
     const complex complex::operator+(const complex& a)const {

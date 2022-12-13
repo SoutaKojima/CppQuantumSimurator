@@ -6,6 +6,71 @@
 
 namespace QuantumSystem
 {
+    void QuantumCircuit::Detection(int index, int n) {
+        try
+        {
+            c[index].Detection(n);
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!" << std::endl;
+            exit(1);
+        }
+        return;
+    }
+
+    void QuantumCircuit::Detection(int index) {
+        try
+        {
+            c[index].Detection(1000);
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!" << std::endl;
+            exit(1);
+        }
+        return;
+    }
+
+    void QuantumCircuit::Init(int index) {
+        try
+        {
+            c[index].Init();
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!" << std::endl;
+            exit(1);
+        }
+        return;
+    }
+
+    void QuantumCircuit::H(int index) {
+        try
+        {
+            c[index].H();
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!" << std::endl;
+            exit(1);
+        }
+        return;
+    }
+
+    void QuantumCircuit::X(int index) {
+        try
+        {
+            c[index].X();
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!" << std::endl;
+            exit(1);
+        }
+        return;
+    }
+
     Qubit Qubit::Init() {
         Qubit q;
         complex c;

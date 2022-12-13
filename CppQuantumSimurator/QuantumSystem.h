@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 namespace QuantumSystem
 {
@@ -22,5 +23,16 @@ namespace QuantumSystem
         void Detection(int n);
         void H();
         void X();
+    };
+
+    class QuantumCircuit
+    {
+        std::vector<Qubit> c;
+        void Init(int index);
+        void Detection(int index,int n);
+        void Detection(int index);
+        void H(int index);
+        void X(int index);
+        void CX(int ctrl,int index);
     };
 }

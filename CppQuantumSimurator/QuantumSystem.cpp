@@ -22,6 +22,7 @@ namespace QuantumSystem
     void QuantumCircuit::Detection(int index) {
         try
         {
+            std::cout << "index:" << index << std::endl;
             c[index].Detection(1000);
         }
         catch (const std::exception&)
@@ -113,13 +114,14 @@ namespace QuantumSystem
 
         for (int i = 0; i < n; ++i) {
             double r = distr(eng);
-            std::cout << (zero_prob > r ? 0 : 1);
+            //std::cout << (zero_prob > r ? 0 : 1);
             ++count[(zero_prob > r ? 0 : 1)];
-            if (i % 10 == 9) std::cout << std::endl;
+            //if (i % 10 == 9) std::cout << std::endl;
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
         std::cout << "zero:" << count[0] << std::endl;
         std::cout << " one:" << count[1] << std::endl;
+        std::cout << std::endl;
     }
 
     void Qubit::H() {

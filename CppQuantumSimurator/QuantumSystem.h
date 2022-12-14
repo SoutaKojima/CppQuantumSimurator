@@ -28,7 +28,9 @@ namespace QuantumSystem
 
     class QuantumCircuit
     {
+    private:
         std::vector<Qubit> c;
+    public:
         void Init(int n);
         void Detection(int index,int n);
         void Detection(int index);

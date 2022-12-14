@@ -68,20 +68,22 @@ namespace QuantumSystem
     void QuantumCircuit::CX(int ctrl, int index) {
         try
         {
-            c[index];
-            c[ctrl];
+            complex zero_zero = c[ctrl].zero_ket * c[index].zero_ket;
+            complex zero_one = c[ctrl].zero_ket * c[index].one_ket;
+            complex one_zero = c[ctrl].one_ket * c[index].one_ket;
+            complex one_one = c[ctrl].one_ket * c[index].zero_ket;
+
+            c[ctrl].zero_ket = zero_zero;
+            c[ctrl].one_ket = zero_one;
+            c[index].zero_ket = one_zero;
+            c[index].one_ket = one_one;
         }
         catch (const std::exception&)
         {
             std::cout << "Index out of range!(CX)" << std::endl;
             exit(1);
         }
-        complex zero_zero = c[ctrl].zero_ket * c[index].zero_ket;
-        complex zero_one = c[ctrl].zero_ket * c[index].one_ket;
-        complex one_zero = c[ctrl].one_ket * c[index].one_ket;
-        complex one_one = c[ctrl].one_ket * c[index].zero_ket;
-
-
+       
     }
 
     Qubit Qubit::Init() {

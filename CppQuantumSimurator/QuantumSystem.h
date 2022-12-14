@@ -11,6 +11,7 @@ namespace QuantumSystem
         double abs();
         const complex operator+(const complex& a) const;
         const complex operator-(const complex& a) const;
+        const complex operator*(const complex& a) const;
         const complex operator/(const double& a) const;
     };
 
@@ -28,7 +29,7 @@ namespace QuantumSystem
     class QuantumCircuit
     {
         std::vector<Qubit> c;
-        void Init(int index);
+        void Init(int n);
         void Detection(int index,int n);
         void Detection(int index);
         void H(int index);

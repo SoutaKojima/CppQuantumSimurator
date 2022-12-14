@@ -13,7 +13,7 @@ namespace QuantumSystem
         }
         catch (const std::exception&)
         {
-            std::cout << "Index out of range!" << std::endl;
+            std::cout << "Index out of range!(Detection)" << std::endl;
             exit(1);
         }
         return;
@@ -26,22 +26,16 @@ namespace QuantumSystem
         }
         catch (const std::exception&)
         {
-            std::cout << "Index out of range!" << std::endl;
+            std::cout << "Index out of range!(Detection)" << std::endl;
             exit(1);
         }
         return;
     }
 
-    void QuantumCircuit::Init(int index) {
-        try
-        {
-            c[index].Init();
-        }
-        catch (const std::exception&)
-        {
-            std::cout << "Index out of range!" << std::endl;
-            exit(1);
-        }
+    void QuantumCircuit::Init(int n) {
+        c.clear();
+        Qubit q = q.Init();
+        for (int i = 0; i < n; ++i) c.push_back(q);
         return;
     }
 
@@ -52,7 +46,7 @@ namespace QuantumSystem
         }
         catch (const std::exception&)
         {
-            std::cout << "Index out of range!" << std::endl;
+            std::cout << "Index out of range!(H)" << std::endl;
             exit(1);
         }
         return;
@@ -65,10 +59,29 @@ namespace QuantumSystem
         }
         catch (const std::exception&)
         {
-            std::cout << "Index out of range!" << std::endl;
+            std::cout << "Index out of range!(X)" << std::endl;
             exit(1);
         }
         return;
+    }
+
+    void QuantumCircuit::CX(int ctrl, int index) {
+        try
+        {
+            c[index];
+            c[ctrl];
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Index out of range!(CX)" << std::endl;
+            exit(1);
+        }
+        complex zero_zero = c[ctrl].zero_ket * c[index].zero_ket;
+        complex zero_one = c[ctrl].zero_ket * c[index].one_ket;
+        complex one_zero = c[ctrl].one_ket * c[index].one_ket;
+        complex one_one = c[ctrl].one_ket * c[index].zero_ket;
+
+
     }
 
     Qubit Qubit::Init() {
@@ -149,6 +162,13 @@ namespace QuantumSystem
         complex tmp;
         tmp.re = re - a.re;
         tmp.im = im - a.im;
+        return tmp;
+    }
+
+    const complex complex::operator*(const complex& a)const {
+        complex tmp;
+        tmp.re = re * a.re - im * a.im;
+        tmp.im = re * a.im + im * a.re;
         return tmp;
     }
 

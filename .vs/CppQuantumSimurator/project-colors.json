@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "71fe63e1-dfd0-4fbc-8f6a-9a30a577bb81": {
+      "ProjectGuid": "71fe63e1-dfd0-4fbc-8f6a-9a30a577bb81",
+      "DisplayName": "CppQuantumSimurator",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

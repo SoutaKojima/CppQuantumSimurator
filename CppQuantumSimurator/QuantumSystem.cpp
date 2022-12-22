@@ -3,13 +3,32 @@
 #include <iostream>
 #include <random>
 #include <iomanip>
+#include <bitset>
 
 namespace QuantumSystem
 {
-    void QuantumCircuit::Detection(int index, int n) {
+    void QuantumCircuit::Detection(int n) {
         try
         {
-            c[index].Detection(n);
+            std::vector<int> count(pattern_length,0);
+
+            for (int i = 0; i < n; ++i) {
+                std::random_device rd;
+                std::default_random_engine eng(rd());
+                std::uniform_real_distribution<double> distr(0, 1);
+
+                int tmp = 0;
+                for (int i = 0; i < c.size(); ++i) {
+                    double r = distr(eng);
+                    double zero_prob = c[i].zero_ket.norm();
+                    tmp += (zero_prob > r ? 0 : 1) << i;
+                }
+                ++count[tmp];
+            }
+            for (int i = 0; i<pattern_length ; ++i) {
+                std::cout << std::bitset<8>(i)<<':';
+                std::cout << count[i] << std::endl;
+            }
         }
         catch (const std::exception&)
         {
@@ -19,11 +38,10 @@ namespace QuantumSystem
         return;
     }
 
-    void QuantumCircuit::Detection(int index) {
+    void QuantumCircuit::Detection() {
         try
         {
-            std::cout << "index:" << index << std::endl;
-            c[index].Detection(1000);
+            Detection(1000);
         }
         catch (const std::exception&)
         {
@@ -35,8 +53,12 @@ namespace QuantumSystem
 
     void QuantumCircuit::Init(int n) {
         c.clear();
+        pattern_length = 1;
         Qubit q = q.Init();
-        for (int i = 0; i < n; ++i) c.push_back(q);
+        for (int i = 0; i < n; ++i) {
+            c.push_back(q);
+            pattern_length *= 2;
+        }
         return;
     }
 

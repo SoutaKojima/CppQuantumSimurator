@@ -30,10 +30,11 @@ namespace QuantumSystem
     {
     private:
         std::vector<Qubit> c;
+        long pattern_length;
     public:
         void Init(int n);
-        void Detection(int index,int n);
-        void Detection(int index);
+        void Detection(int n);
+        void Detection();
         void H(int index);
         void X(int index);
         void CX(int ctrl,int index);

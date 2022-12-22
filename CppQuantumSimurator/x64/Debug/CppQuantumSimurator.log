@@ -1,3 +1,2 @@
 ﻿  QuantumTest.cpp
-C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\QuantumTest.cpp(17,19): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
   CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

@@ -1,4 +1,5 @@
 #pragma once
+using namespace std;
 #include<vector>
 
 namespace QuantumSystem
@@ -31,7 +32,7 @@ namespace QuantumSystem
     {
     public:
         complex zero_ket, one_ket;
-        Entangle e;
+        vector<Entangle> e;
         Qubit Init();
         void Show();
         void Detection(int n);
@@ -42,7 +43,7 @@ namespace QuantumSystem
     class QuantumCircuit
     {
     private:
-        std::vector<Qubit> c;
+        vector<Qubit> c;
         long pattern_length;
     public:
         void Init(int n);

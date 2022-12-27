@@ -13,7 +13,7 @@ int main()
 
 
 
-    qc.Detection(1);
+    qc.Detection(1e4);
    
     return 0;
 }

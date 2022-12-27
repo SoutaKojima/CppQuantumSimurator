@@ -4,72 +4,76 @@
 #include <random>
 #include <iomanip>
 #include <bitset>
+using namespace std;
 
 namespace QuantumSystem
 {
     void QuantumCircuit::Detection(int n) {
         try
         {
-            std::vector<int> count(pattern_length,0);
+            vector<int> count(pattern_length,0);
 
             for (int i = 0; i < n; ++i) {
-                std::random_device rd;
-                std::default_random_engine eng(rd());
-                std::uniform_real_distribution<double> distr(0, 1);
-                std::vector<Qubit> c_tmp = c;
+                random_device rd;
+                default_random_engine eng(rd());
+                uniform_real_distribution<double> distr(0, 1);
+                vector<Qubit> c_tmp = c;
                 int tmp = 0;
                 for (int i = 0; i < c_tmp.size(); ++i) {
                     double r = distr(eng);
                     int result;
                     double zero_prob;
-                    if (c_tmp[i].e.enable == -1) {
-                        zero_prob = c_tmp[i].zero_ket.norm();
-                        result = (zero_prob > r ? 0 : 1);
-                        //std::cout << "enable == -1" << std::endl;//debug
-                    }
-                    else {
-                        int partner = c_tmp[i].e.enable;
-                        result = (c_tmp[i].e.zero_zero.norm() + c_tmp[i].e.zero_one.norm() > r ? 0 : 1);
-                        //std::cout << "enable == " << c_tmp[i].e.enable << std::endl;//debug
-                        //std::cout << c_tmp[i].e.zero_zero.norm() << std::endl;//debug
-                        //std::cout << c_tmp[i].e.zero_one.norm() << std::endl;//debug
-                        //std::cout << c_tmp[i].e.one_zero.norm() << std::endl;//debug
-                        //std::cout << c_tmp[i].e.one_one.norm() << std::endl;//debug
-                        if (result == 0) {
-                            //c[i].e.one_zero = 0
-                            //c[i].e.one_one = 0
-                            double radius = complex::Normalize(c_tmp[i].e.zero_zero, c_tmp[i].e.zero_one);
-                            c_tmp[c_tmp[i].e.enable].zero_ket = c_tmp[i].e.zero_zero * radius;
-                            c_tmp[c_tmp[i].e.enable].one_ket = c_tmp[i].e.zero_one * radius;
-                            //std::cout << "       radius == " << radius << std::endl;//debug
-                            //std::cout << "zero_zero_ket == " << c_tmp[c_tmp[i].e.enable].zero_ket.norm() << std::endl;//debug
-                            //std::cout << "zero_ one_ket == " << c_tmp[c_tmp[i].e.enable].one_ket.norm() << std::endl;//debug
+
+                    for (vector<Entangle>::iterator itr = c_tmp[i].e.begin(); itr != c_tmp[i].e.end(); ++itr) {
+                        if ((*itr).enable == -1) {
+                            zero_prob = c_tmp[i].zero_ket.norm();
+                            result = (zero_prob > r ? 0 : 1);
+                            //cout << "enable == -1" << endl;//debug
                         }
                         else {
-                            //c[i].e.zero_zero = 0
-                            //c[i].e.zero_one = 0
-                            double radius = complex::Normalize(c_tmp[i].e.one_zero, c_tmp[i].e.one_one);
-                            c_tmp[c_tmp[i].e.enable].zero_ket = c_tmp[i].e.one_zero * radius;
-                            c_tmp[c_tmp[i].e.enable].one_ket = c_tmp[i].e.one_one * radius;
-                            //std::cout << "       radius == " << radius << std::endl;//debug
-                            //std::cout << " one_zero_ket == " << c_tmp[c_tmp[i].e.enable].zero_ket.norm() << std::endl;//debug
-                            //std::cout << " one_ one_ket == " << c_tmp[c_tmp[i].e.enable].one_ket.norm() << std::endl;//debug
+                            int partner = (*itr).enable;
+                            result = ((*itr).zero_zero.norm() + (*itr).zero_one.norm() > r ? 0 : 1);
+                            //cout << "enable == " << (*itr).enable << endl;//debug
+                            //cout << (*itr).zero_zero.norm() << endl;//debug
+                            //cout << (*itr).zero_one.norm() << endl;//debug
+                            //cout << (*itr).one_zero.norm() << endl;//debug
+                            //cout << (*itr).one_one.norm() << endl;//debug
+                            if (result == 0) {
+                                //c[i].e.one_zero = 0
+                                //c[i].e.one_one = 0
+                                double radius = complex::Normalize((*itr).zero_zero, (*itr).zero_one);
+                                c_tmp[(*itr).enable].zero_ket = (*itr).zero_zero * radius;
+                                c_tmp[(*itr).enable].one_ket = (*itr).zero_one * radius;
+                                //cout << "       radius == " << radius << endl;//debug
+                                //cout << "zero_zero_ket == " << c_tmp[(*itr).enable].zero_ket.norm() << endl;//debug
+                                //cout << "zero_ one_ket == " << c_tmp[(*itr).enable].one_ket.norm() << endl;//debug
+                            }
+                            else {
+                                //c[i].e.zero_zero = 0
+                                //c[i].e.zero_one = 0
+                                double radius = complex::Normalize((*itr).one_zero, (*itr).one_one);
+                                c_tmp[(*itr).enable].zero_ket = (*itr).one_zero * radius;
+                                c_tmp[(*itr).enable].one_ket = (*itr).one_one * radius;
+                                //cout << "       radius == " << radius << endl;//debug
+                                //cout << " one_zero_ket == " << c_tmp[(*itr).enable].zero_ket.norm() << endl;//debug
+                                //cout << " one_ one_ket == " << c_tmp[(*itr).enable].one_ket.norm() << endl;//debug
+                            }
+                            c_tmp[c_tmp[i].e.enable].e.enable = -1;
+                            c_tmp[i].e.enable = -1;
                         }
-                        c_tmp[c_tmp[i].e.enable].e.enable = -1;
-                        c_tmp[i].e.enable = -1;
                     }
                     tmp += result << i;
                 }
                 ++count[tmp];
             }
             for (int i = 0; i<pattern_length ; ++i) {
-                std::cout << std::bitset<8>(i)<<'('<<i<<')'<<':';
-                std::cout << count[i] << std::endl;
+                cout << bitset<8>(i)<<'('<<i<<')'<<':';
+                cout << count[i] << endl;
             }
         }
-        catch (const std::exception&)
+        catch (const exception&)
         {
-            std::cout << "Index out of range!(Detection)" << std::endl;
+            cout << "Index out of range!(Detection)" << endl;
             exit(1);
         }
         return;
@@ -80,9 +84,9 @@ namespace QuantumSystem
         {
             Detection(1000);
         }
-        catch (const std::exception&)
+        catch (const exception&)
         {
-            std::cout << "Index out of range!(Detection)" << std::endl;
+            cout << "Index out of range!(Detection)" << endl;
             exit(1);
         }
         return;
@@ -104,9 +108,9 @@ namespace QuantumSystem
         {
             c[index].H();
         }
-        catch (const std::exception&)
+        catch (const exception&)
         {
-            std::cout << "Index out of range!(H)" << std::endl;
+            cout << "Index out of range!(H)" << endl;
             exit(1);
         }
         return;
@@ -117,9 +121,9 @@ namespace QuantumSystem
         {
             c[index].X();
         }
-        catch (const std::exception&)
+        catch (const exception&)
         {
-            std::cout << "Index out of range!(X)" << std::endl;
+            cout << "Index out of range!(X)" << endl;
             exit(1);
         }
         return;
@@ -133,21 +137,24 @@ namespace QuantumSystem
             complex one_zero = c[ctrl].one_ket * c[index].one_ket;
             complex one_one = c[ctrl].one_ket * c[index].zero_ket;
 
-            c[ctrl].e.enable = index;
-            c[ctrl].e.zero_zero = zero_zero;
-            c[ctrl].e.zero_one = zero_one;
-            c[ctrl].e.one_zero = one_zero;
-            c[ctrl].e.one_one = one_one;
+            Entangle e_tmp;
+            e_tmp.enable = index;
+            e_tmp.zero_zero = zero_zero;
+            e_tmp.zero_one = zero_one;
+            e_tmp.one_zero = one_zero;
+            e_tmp.one_one = one_one;
+            c[ctrl].e.push_back(e_tmp);
 
-            c[index].e.enable = ctrl;
-            c[index].e.zero_zero = zero_zero;
-            c[index].e.zero_one = one_zero; //reversed
-            c[index].e.one_zero = zero_one; //reversed
-            c[index].e.one_one = one_one;
+            e_tmp.enable = ctrl;
+            e_tmp.zero_zero = zero_zero;
+            e_tmp.zero_one = one_zero; //reversed
+            e_tmp.one_zero = zero_one; //reversed
+            e_tmp.one_one = one_one;
+            c[index].e.push_back(e_tmp);
         }
-        catch (const std::exception&)
+        catch (const exception&)
         {
-            std::cout << "Index out of range!(CX)" << std::endl;
+            cout << "Index out of range!(CX)" << endl;
             exit(1);
         }
        
@@ -164,30 +171,30 @@ namespace QuantumSystem
     }
 
     void Qubit::Show() {
-        std::cout << "zero_ket re:" << zero_ket.re << " ";
-        std::cout << "zero_ket im:" << zero_ket.im << std::endl;
-        std::cout << "one_ket re:" << one_ket.re << " ";
-        std::cout << "one_ket im:" << one_ket.im << std::endl;
-        std::cout << std::endl;
+        cout << "zero_ket re:" << zero_ket.re << " ";
+        cout << "zero_ket im:" << zero_ket.im << endl;
+        cout << "one_ket re:" << one_ket.re << " ";
+        cout << "one_ket im:" << one_ket.im << endl;
+        cout << endl;
     }
 
     void Qubit::Detection(int n) {
         double zero_prob = zero_ket.norm();
         int count[] = {0,0};
-        std::random_device rd;
-        std::default_random_engine eng(rd());
-        std::uniform_real_distribution<double> distr(0, 1);
+        random_device rd;
+        default_random_engine eng(rd());
+        uniform_real_distribution<double> distr(0, 1);
 
         for (int i = 0; i < n; ++i) {
             double r = distr(eng);
-            //std::cout << (zero_prob > r ? 0 : 1);
+            //cout << (zero_prob > r ? 0 : 1);
             ++count[(zero_prob > r ? 0 : 1)];
-            //if (i % 10 == 9) std::cout << std::endl;
+            //if (i % 10 == 9) cout << endl;
         }
-        //std::cout << std::endl;
-        std::cout << "zero:" << count[0] << std::endl;
-        std::cout << " one:" << count[1] << std::endl;
-        std::cout << std::endl;
+        //cout << endl;
+        cout << "zero:" << count[0] << endl;
+        cout << " one:" << count[1] << endl;
+        cout << endl;
     }
 
     void Qubit::H() {

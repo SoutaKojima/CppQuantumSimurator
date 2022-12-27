@@ -9,16 +9,29 @@ namespace QuantumSystem
         complex set(double a, double b); // return a+bi
         double norm();
         double abs();
+        static double Normalize(complex a, complex b);
         const complex operator+(const complex& a) const;
         const complex operator-(const complex& a) const;
         const complex operator*(const complex& a) const;
+        const complex operator*(const double& a) const;
         const complex operator/(const double& a) const;
+    };
+
+    class Entangle
+    {
+    public:
+        int enable = -1;
+        complex zero_zero;
+        complex zero_one;
+        complex one_zero;
+        complex one_one;
     };
 
     class Qubit
     {
     public:
         complex zero_ket, one_ket;
+        Entangle e;
         Qubit Init();
         void Show();
         void Detection(int n);
@@ -39,4 +52,6 @@ namespace QuantumSystem
         void X(int index);
         void CX(int ctrl,int index);
     };
+
+    
 }

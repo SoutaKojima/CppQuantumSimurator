@@ -16,17 +16,54 @@ namespace QuantumSystem
                 std::random_device rd;
                 std::default_random_engine eng(rd());
                 std::uniform_real_distribution<double> distr(0, 1);
-
+                std::vector<Qubit> c_tmp = c;
                 int tmp = 0;
-                for (int i = 0; i < c.size(); ++i) {
+                for (int i = 0; i < c_tmp.size(); ++i) {
                     double r = distr(eng);
-                    double zero_prob = c[i].zero_ket.norm();
-                    tmp += (zero_prob > r ? 0 : 1) << i;
+                    int result;
+                    double zero_prob;
+                    if (c_tmp[i].e.enable == -1) {
+                        zero_prob = c_tmp[i].zero_ket.norm();
+                        result = (zero_prob > r ? 0 : 1);
+                        //std::cout << "enable == -1" << std::endl;//debug
+                    }
+                    else {
+                        int partner = c_tmp[i].e.enable;
+                        result = (c_tmp[i].e.zero_zero.norm() + c_tmp[i].e.zero_one.norm() > r ? 0 : 1);
+                        //std::cout << "enable == " << c_tmp[i].e.enable << std::endl;//debug
+                        //std::cout << c_tmp[i].e.zero_zero.norm() << std::endl;//debug
+                        //std::cout << c_tmp[i].e.zero_one.norm() << std::endl;//debug
+                        //std::cout << c_tmp[i].e.one_zero.norm() << std::endl;//debug
+                        //std::cout << c_tmp[i].e.one_one.norm() << std::endl;//debug
+                        if (result == 0) {
+                            //c[i].e.one_zero = 0
+                            //c[i].e.one_one = 0
+                            double radius = complex::Normalize(c_tmp[i].e.zero_zero, c_tmp[i].e.zero_one);
+                            c_tmp[c_tmp[i].e.enable].zero_ket = c_tmp[i].e.zero_zero * radius;
+                            c_tmp[c_tmp[i].e.enable].one_ket = c_tmp[i].e.zero_one * radius;
+                            //std::cout << "       radius == " << radius << std::endl;//debug
+                            //std::cout << "zero_zero_ket == " << c_tmp[c_tmp[i].e.enable].zero_ket.norm() << std::endl;//debug
+                            //std::cout << "zero_ one_ket == " << c_tmp[c_tmp[i].e.enable].one_ket.norm() << std::endl;//debug
+                        }
+                        else {
+                            //c[i].e.zero_zero = 0
+                            //c[i].e.zero_one = 0
+                            double radius = complex::Normalize(c_tmp[i].e.one_zero, c_tmp[i].e.one_one);
+                            c_tmp[c_tmp[i].e.enable].zero_ket = c_tmp[i].e.one_zero * radius;
+                            c_tmp[c_tmp[i].e.enable].one_ket = c_tmp[i].e.one_one * radius;
+                            //std::cout << "       radius == " << radius << std::endl;//debug
+                            //std::cout << " one_zero_ket == " << c_tmp[c_tmp[i].e.enable].zero_ket.norm() << std::endl;//debug
+                            //std::cout << " one_ one_ket == " << c_tmp[c_tmp[i].e.enable].one_ket.norm() << std::endl;//debug
+                        }
+                        c_tmp[c_tmp[i].e.enable].e.enable = -1;
+                        c_tmp[i].e.enable = -1;
+                    }
+                    tmp += result << i;
                 }
                 ++count[tmp];
             }
             for (int i = 0; i<pattern_length ; ++i) {
-                std::cout << std::bitset<8>(i)<<':';
+                std::cout << std::bitset<8>(i)<<'('<<i<<')'<<':';
                 std::cout << count[i] << std::endl;
             }
         }
@@ -96,10 +133,17 @@ namespace QuantumSystem
             complex one_zero = c[ctrl].one_ket * c[index].one_ket;
             complex one_one = c[ctrl].one_ket * c[index].zero_ket;
 
-            c[ctrl].zero_ket = zero_zero;
-            c[ctrl].one_ket = zero_one;
-            c[index].zero_ket = one_zero;
-            c[index].one_ket = one_one;
+            c[ctrl].e.enable = index;
+            c[ctrl].e.zero_zero = zero_zero;
+            c[ctrl].e.zero_one = zero_one;
+            c[ctrl].e.one_zero = one_zero;
+            c[ctrl].e.one_one = one_one;
+
+            c[index].e.enable = ctrl;
+            c[index].e.zero_zero = zero_zero;
+            c[index].e.zero_one = one_zero; //reversed
+            c[index].e.one_zero = zero_one; //reversed
+            c[index].e.one_one = one_one;
         }
         catch (const std::exception&)
         {
@@ -177,6 +221,10 @@ namespace QuantumSystem
         return sqrt(norm());
     }
 
+    double complex::Normalize(complex a,complex b) {
+        return 1 / (a.norm() + b.norm());
+    }
+
     const complex complex::operator+(const complex& a)const {
         complex tmp;
         tmp.re = re + a.re;
@@ -195,6 +243,13 @@ namespace QuantumSystem
         complex tmp;
         tmp.re = re * a.re - im * a.im;
         tmp.im = re * a.im + im * a.re;
+        return tmp;
+    }
+
+    const complex complex::operator*(const double& a)const {
+        complex tmp;
+        tmp.re = re * a;
+        tmp.im = im * a;
         return tmp;
     }
 

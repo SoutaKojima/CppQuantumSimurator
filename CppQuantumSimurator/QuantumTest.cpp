@@ -9,7 +9,7 @@ int main()
     qc.Init(2);
 
     qc.H(0);
-    qc.H(1);
+    qc.CX(0,1);
 
     qc.Detection(10000);
    

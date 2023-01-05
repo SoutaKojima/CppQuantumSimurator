@@ -5,7 +5,8 @@
 #include <iomanip>
 #include <bitset>
 
-namespace std {
+namespace std
+{
     complex complex::set(double a, double b) {
         complex tmp;
         tmp.re = a;

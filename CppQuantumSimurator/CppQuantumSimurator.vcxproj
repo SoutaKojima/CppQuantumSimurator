@@ -137,7 +137,7 @@
     <ClCompile Include="MathLibrary.cpp" />
     <ClCompile Include="calculation.cpp" />
     <ClCompile Include="QuantumCircuit.cpp" />
-    <ClCompile Include="QuantumTest.cpp" />
+    <ClCompile Include="QuantumMain.cpp" />
     <ClCompile Include="Qubit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

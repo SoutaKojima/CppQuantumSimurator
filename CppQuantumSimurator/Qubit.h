@@ -2,7 +2,8 @@
 #include"complex.h"
 #include<vector>
 
-namespace std {
+namespace std
+{
     class Entangle
     {
     public:

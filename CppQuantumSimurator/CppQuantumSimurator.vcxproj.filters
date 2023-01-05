@@ -38,7 +38,7 @@
     <ClCompile Include="QuantumCircuit.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="QuantumTest.cpp">
+    <ClCompile Include="QuantumMain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Qubit.cpp">

@@ -5,7 +5,8 @@
 #include <iomanip>
 #include <bitset>
 
-namespace std {
+namespace std
+{
     Qubit Qubit::Init() {
         Qubit q;
         complex c;
@@ -58,6 +59,4 @@ namespace std {
         zero_ket = tmp.zero_ket;
         one_ket = tmp.one_ket;
     }
-
-    
 }

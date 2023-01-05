@@ -7,10 +7,10 @@
 
 namespace std
 {
-    void QuantumCircuit::Detection(int n) {
+    void QuantumCircuit:: Detection(int n) {
         try
         {
-            vector<int> count(pattern_length,0);
+            vector<int> count(pattern_length, 0);
 
             for (int i = 0; i < n; ++i) {
                 random_device rd;
@@ -68,8 +68,8 @@ namespace std
                 }
                 ++count[tmp];
             }
-            for (int i = 0; i<pattern_length ; ++i) {
-                cout << bitset<8>(i)<<'('<<i<<')'<<':';
+            for (int i = 0; i < pattern_length; ++i) {
+                cout << bitset<8>(i) << '(' << i << ')' << ':';
                 cout << count[i] << endl;
             }
         }

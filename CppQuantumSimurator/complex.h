@@ -1,7 +1,9 @@
 #pragma once
 
-namespace std {
-    class complex {
+namespace std
+{
+    class complex
+    {
     public:
         double re, im;
         complex set(double a, double b); // return a+bi

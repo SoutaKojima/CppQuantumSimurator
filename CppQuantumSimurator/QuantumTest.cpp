@@ -1,7 +1,6 @@
 #include <iostream>
-#include "QuantumSystem.h"
+#include "QuantumCircuit.h"
 using namespace std;
-using namespace QuantumSystem;
 
 int main()
 {

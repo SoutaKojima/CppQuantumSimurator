@@ -127,14 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="complex.h" />
     <ClInclude Include="MathLibrary.h" />
-    <ClInclude Include="QuantumSystem.h" />
+    <ClInclude Include="QuantumCircuit.h" />
+    <ClInclude Include="Qubit.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="complex.cpp" />
     <ClCompile Include="MathLibrary.cpp" />
     <ClCompile Include="calculation.cpp" />
-    <ClCompile Include="QuantumSystem.cpp" />
+    <ClCompile Include="QuantumCircuit.cpp" />
     <ClCompile Include="QuantumTest.cpp" />
+    <ClCompile Include="Qubit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

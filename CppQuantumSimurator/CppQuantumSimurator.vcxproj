@@ -128,14 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="complex.h" />
-    <ClInclude Include="MathLibrary.h" />
     <ClInclude Include="QuantumCircuit.h" />
     <ClInclude Include="Qubit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
-    <ClCompile Include="MathLibrary.cpp" />
-    <ClCompile Include="calculation.cpp" />
     <ClCompile Include="QuantumCircuit.cpp" />
     <ClCompile Include="QuantumMain.cpp" />
     <ClCompile Include="Qubit.cpp" />

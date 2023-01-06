@@ -8,6 +8,7 @@ namespace std
     {
     public:
         int pair = -1;
+        int id;
         complex zero_zero;
         complex zero_one;
         complex one_zero;

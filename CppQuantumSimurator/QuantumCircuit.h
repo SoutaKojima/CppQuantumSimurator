@@ -9,6 +9,7 @@ namespace std
     private:
         vector<Qubit> c;
         long pattern_length;
+        int gate_id = 0;
     public:
         void Init(int n);
         void Detection(int n);

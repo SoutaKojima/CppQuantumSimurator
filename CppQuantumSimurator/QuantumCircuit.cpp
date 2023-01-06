@@ -58,10 +58,18 @@ namespace std
                                 //cout << " one_zero_ket == " << c_tmp[(*itr).enable].zero_ket.norm() << endl;//debug
                                 //cout << " one_ one_ket == " << c_tmp[(*itr).enable].one_ket.norm() << endl;//debug
                             }
-
+                            for(vector<Entangle>::iterator var = c_tmp[(*itr).pair].e.begin(); var != c_tmp[(*itr).pair].e.end(); ++var)
+                            {
+                                //cout << "       var_id == " << (*var).id << endl;//debug
+                                //cout << "       itr_id == " << (*itr).id << endl;//debug
+                                if ((*var).id == (*itr).id) {
+                                    //c_tmp[(*itr).pair].e.erase(var);
+                                    (*var).pair = -1;
+                                    break;
+                                }
+                            }
                             //c_tmp[(*itr).pair].e.pair = -1;
                             //c_tmp[i].e.enable = -1;
-
                         }
                     }
                     tmp += result << i;
@@ -141,6 +149,7 @@ namespace std
 
             Entangle e_tmp;
             e_tmp.pair = index;
+            e_tmp.id = gate_id;
             e_tmp.zero_zero = zero_zero;
             e_tmp.zero_one = zero_one;
             e_tmp.one_zero = one_zero;
@@ -153,6 +162,8 @@ namespace std
             e_tmp.one_zero = zero_one; //reversed
             e_tmp.one_one = one_one;
             c[index].e.push_back(e_tmp);
+
+            ++gate_id;
         }
         catch (const exception&)
         {

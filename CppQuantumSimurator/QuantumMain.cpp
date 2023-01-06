@@ -8,6 +8,7 @@ int main()
 
     qc.H(0);
     qc.CX(0, 1);
+    //qc.CX(0, 1);
 
     qc.Detection(1e4);
    

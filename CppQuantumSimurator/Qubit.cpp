@@ -10,23 +10,23 @@ namespace std
     Qubit Qubit::Init() {
         Qubit q;
         complex c;
-        q.zero_ket = c.set(1, 0);
-        q.one_ket = c.set(0, 0);
-        zero_ket = q.zero_ket;
-        one_ket = q.one_ket;
+        q.ket[0] = c.set(1, 0);
+        q.ket[1] = c.set(0, 0);
+        ket[0] = q.ket[0];
+        ket[1] = q.ket[1];
         return q;
     }
 
     void Qubit::Show() {
-        cout << "zero_ket re:" << zero_ket.re << " ";
-        cout << "zero_ket im:" << zero_ket.im << endl;
-        cout << "one_ket re:" << one_ket.re << " ";
-        cout << "one_ket im:" << one_ket.im << endl;
+        cout << "ket[0] re:" << ket[0].re << " ";
+        cout << "ket[0] im:" << ket[0].im << endl;
+        cout << "ket[1] re:" << ket[1].re << " ";
+        cout << "ket[1] im:" << ket[1].im << endl;
         cout << endl;
     }
 
     void Qubit::Detection(int n) {
-        double zero_prob = zero_ket.norm();
+        double zero_prob = ket[0].norm();
         int count[] = { 0,0 };
         random_device rd;
         default_random_engine eng(rd());
@@ -46,17 +46,17 @@ namespace std
 
     void Qubit::H() {
         Qubit tmp = tmp.Init();
-        tmp.zero_ket = (zero_ket + one_ket) / sqrt(2);
-        tmp.one_ket = (zero_ket - one_ket) / sqrt(2);
-        zero_ket = tmp.zero_ket;
-        one_ket = tmp.one_ket;
+        tmp.ket[0] = (ket[0] + ket[1]) / sqrt(2);
+        tmp.ket[1] = (ket[0] - ket[1]) / sqrt(2);
+        ket[0] = tmp.ket[0];
+        ket[1] = tmp.ket[1];
     }
 
     void Qubit::X() {
         Qubit tmp = tmp.Init();
-        tmp.zero_ket = one_ket;
-        tmp.one_ket = zero_ket;
-        zero_ket = tmp.zero_ket;
-        one_ket = tmp.one_ket;
+        tmp.ket[0] = ket[1];
+        tmp.ket[1] = ket[0];
+        ket[0] = tmp.ket[0];
+        ket[1] = tmp.ket[1];
     }
 }

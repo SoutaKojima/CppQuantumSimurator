@@ -9,16 +9,17 @@ namespace std
     public:
         int pair = -1;
         int id;
-        complex zero_zero;
+        complex kets[2][2];
+        /*complex zero_zero;
         complex zero_one;
         complex one_zero;
-        complex one_one;
+        complex one_one;*/
     };
 
     class Qubit
     {
     public:
-        complex zero_ket, one_ket;
+        complex ket[2];
         vector<Entangle> e;
         Qubit Init();
         void Show();

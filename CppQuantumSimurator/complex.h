@@ -1,4 +1,9 @@
 #pragma once
+#include <math.h>
+#include <iostream>
+#include <random>
+#include <iomanip>
+#include <bitset>
 
 namespace std
 {

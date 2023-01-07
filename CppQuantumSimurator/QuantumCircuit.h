@@ -1,6 +1,11 @@
 #pragma once
 #include<vector>
 #include<map>
+#include<math.h>
+#include<iostream>
+#include<random>
+#include<iomanip>
+#include<bitset>
 #include"Qubit.h"
 
 namespace std

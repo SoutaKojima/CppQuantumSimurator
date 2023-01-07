@@ -1,6 +1,11 @@
 #pragma once
 #include"complex.h"
 #include<vector>
+#include<math.h>
+#include<iostream>
+#include<random>
+#include<iomanip>
+#include<bitset>
 
 namespace std
 {

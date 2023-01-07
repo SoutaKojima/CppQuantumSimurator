@@ -8,10 +8,11 @@ namespace std
 	class QuantumCircuit
 	{
 	private:
-		vector<Qubit> c;
+		//vector<Qubit> c;
 		map<int, complex> amp;
-		long pattern_length;
-		int gate_id = 0;
+		//long pattern_length;
+		//int gate_id = 0;
+		int qc_size;
 	public:
 		void Init(int n);
 		void Detection(int n);

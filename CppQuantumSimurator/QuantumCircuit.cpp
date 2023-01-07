@@ -10,6 +10,7 @@ namespace std
 	void QuantumCircuit::Detection(int n) {
 		try
 		{
+			/*
 			vector<int> count(pattern_length, 0);
 
 			for (int i = 0; i < n; ++i) {
@@ -54,6 +55,7 @@ namespace std
 				cout << bitset<8>(i) << '(' << i << ')' << ':';
 				cout << count[i] << endl;
 			}
+			:*/
 		}
 		catch (const exception&)
 		{
@@ -64,151 +66,95 @@ namespace std
 	}
 
 	void QuantumCircuit::Detection() {
-		try
-		{
-			Detection(1000);
-		}
-		catch (const exception&)
-		{
-			cout << "Index out of range!(Detection)" << endl;
-			exit(1);
-		}
+		Detection(1000);
 		return;
 	}
 
 	void QuantumCircuit::Amplitude() {
-		try
-		{
-			double prob = 0;
-			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
-				if ((itr->second).norm() != 0) {
-					cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
-					cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
-					prob += (itr->second).norm();
-				}
+		double prob = 0;
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->second).norm() != 0) {
+				cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
+				cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
+				prob += (itr->second).norm();
 			}
-			cout << "Sum of Probability : " << prob << endl;
 		}
-		catch (const exception&)
-		{
-			cout << "Index out of range!(Amplitude)" << endl;
-			exit(1);
-		}
+		cout << "Sum of Probability : " << prob << endl;
 		return;
 	}
 
 	void QuantumCircuit::Init(int n) {
-		c.clear();
-		pattern_length = 1;
-		Qubit q = q.Init();
-		for (int i = 0; i < n; ++i) {
-			c.push_back(q);
-			pattern_length *= 2;
-		}
+		qc_size = n;
 		complex a = a.set(1, 0);
 		amp[0] = a;
 		return;
 	}
 
 	void QuantumCircuit::H(int index) {
-		try
-		{
-			c[index].H();
-			map<int, complex> tmp;
-			complex half = half.set(1/sqrt(2), 0);
-			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
-				if ((itr->first) & (1 << index)) {
-					tmp[itr->first] = (itr->second) * half * (-1);
-					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * half;
-				}
-				else {
-					tmp[itr->first] = (itr->second) * half;
-					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * half;
-				}
-			}
-			amp = tmp;
-		}
-		catch (const exception&)
-		{
+		if (index < 0 or qc_size <= index) {
 			cout << "Index out of range!(H)" << endl;
 			exit(1);
 		}
 
+		map<int, complex> tmp;
+		complex half = half.set(1 / sqrt(2), 0);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = (itr->second) * half * (-1);
+				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * half;
+			}
+			else {
+				tmp[itr->first] = (itr->second) * half;
+				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * half;
+			}
+		}
+		amp = tmp;
 		return;
 	}
 
 	void QuantumCircuit::X(int index) {
-		try
-		{
-			c[index].X();
-			map<int, complex> tmp;
-			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
-				if ((itr->first) & (1 << index)) {
-					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
-				}
-				else {
-					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
-				}
-			}
-			amp = tmp;
-		}
-		catch (const exception&)
-		{
+		if (index < 0 or qc_size <= index) {
 			cout << "Index out of range!(X)" << endl;
 			exit(1);
 		}
+
+		map<int, complex> tmp;
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+			}
+			else {
+				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+			}
+		}
+		amp = tmp;
 		return;
 	}
 
 	void QuantumCircuit::CX(int ctrl, int index) {
-		try
-		{
-			complex kets[2][2] = { c[ctrl].ket[0] * c[index].ket[0]
-								  ,c[ctrl].ket[0] * c[index].ket[1]
-								  ,c[ctrl].ket[1] * c[index].ket[0]
-								  ,c[ctrl].ket[1] * c[index].ket[1] };
-
-			Entangle e_tmp;
-			e_tmp.pair = index;
-			e_tmp.id = gate_id;
-			e_tmp.kets[0][0] = kets[0][0];
-			e_tmp.kets[0][1] = kets[0][1];
-			e_tmp.kets[1][0] = kets[1][0];
-			e_tmp.kets[1][1] = kets[1][1];
-			c[ctrl].e.push_back(e_tmp);
-
-			e_tmp.pair = ctrl;
-			e_tmp.kets[0][0] = kets[0][0];
-			e_tmp.kets[0][1] = kets[1][0]; //reversed
-			e_tmp.kets[1][0] = kets[0][1]; //reversed
-			e_tmp.kets[1][1] = kets[1][1];
-			c[index].e.push_back(e_tmp);
-
-			++gate_id;
-
-			map<int, complex> tmp;
-			complex zero = zero.set(0, 0);
-			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
-				if ((itr->first) & (1 << ctrl)) {
-					if ((itr->first) & (1 << index)) {
-						tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
-						tmp[(itr->first)] = zero;
-					}
-					else {
-						tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
-						tmp[(itr->first)] = zero;
-					}
-				}
-				else {
-					tmp[(itr->first)] = (itr->second);
-				}
-			}
-			amp = tmp;
-		}
-		catch (const exception&)
-		{
+		if (ctrl < 0 or qc_size <= ctrl or index < 0 or qc_size <= index) {
 			cout << "Index out of range!(CX)" << endl;
 			exit(1);
 		}
+
+		map<int, complex> tmp;
+		complex zero = zero.set(0, 0);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << ctrl)) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+					tmp[(itr->first)] = zero;
+				}
+				else {
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+					tmp[(itr->first)] = zero;
+				}
+			}
+			else {
+				tmp[(itr->first)] = (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
 	}
 }

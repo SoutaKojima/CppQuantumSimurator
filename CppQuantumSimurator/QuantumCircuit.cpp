@@ -71,11 +71,11 @@ namespace std
 		complex half = half.set(1 / sqrt(2), 0);
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->first) & (1 << index)) {
-				tmp[itr->first] = (itr->second) * half * (-1);
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * half * (-1);
 				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * half;
 			}
 			else {
-				tmp[itr->first] = (itr->second) * half;
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * half;
 				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * half;
 			}
 		}
@@ -114,11 +114,11 @@ namespace std
 			if ((itr->first) & (1 << ctrl)) {
 				if ((itr->first) & (1 << index)) {
 					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
-					tmp[(itr->first)] = zero;
+					//tmp[(itr->first)] = zero;
 				}
 				else {
 					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
-					tmp[(itr->first)] = zero;
+					//tmp[(itr->first)] = zero;
 				}
 			}
 			else {

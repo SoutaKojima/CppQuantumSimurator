@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
+    <ClCompile Include="Deutsch-JoszaAlgorithm.cpp" />
     <ClCompile Include="QuantumCircuit.cpp" />
     <ClCompile Include="QuantumMain.cpp" />
     <ClCompile Include="Qubit.cpp" />

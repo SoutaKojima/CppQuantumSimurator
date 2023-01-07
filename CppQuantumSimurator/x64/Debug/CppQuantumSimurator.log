@@ -1,7 +1,3 @@
-﻿  QuantumCircuit.cpp
-  QuantumMain.cpp
-C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\QuantumMain.cpp(17,15): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-  Qubit.cpp
-  complex.cpp
-  コードを生成中...
+﻿  Deutsch-JoszaAlgorithm.cpp
+C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\Deutsch-JoszaAlgorithm.cpp(28,15): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

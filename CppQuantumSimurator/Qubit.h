@@ -8,7 +8,7 @@ namespace std
 	{
 	public:
 		int pair = -1;
-		int id;
+		int id=0;
 		complex kets[2][2];
 	};
 

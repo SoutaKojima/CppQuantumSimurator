@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<map>
 #include"Qubit.h"
 
 namespace std
@@ -8,12 +9,14 @@ namespace std
 	{
 	private:
 		vector<Qubit> c;
+		map<int, complex> amp;
 		long pattern_length;
 		int gate_id = 0;
 	public:
 		void Init(int n);
 		void Detection(int n);
 		void Detection();
+		void Amplitude();
 		void H(int index);
 		void X(int index);
 		void CX(int ctrl, int index);

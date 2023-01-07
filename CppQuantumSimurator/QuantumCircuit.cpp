@@ -76,6 +76,27 @@ namespace std
 		return;
 	}
 
+	void QuantumCircuit::Amplitude() {
+		try
+		{
+			double prob = 0;
+			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+				if ((itr->second).norm() != 0) {
+					cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
+					cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
+					prob += (itr->second).norm();
+				}
+			}
+			cout << "Sum of Probability : " << prob << endl;
+		}
+		catch (const exception&)
+		{
+			cout << "Index out of range!(Amplitude)" << endl;
+			exit(1);
+		}
+		return;
+	}
+
 	void QuantumCircuit::Init(int n) {
 		c.clear();
 		pattern_length = 1;
@@ -84,6 +105,8 @@ namespace std
 			c.push_back(q);
 			pattern_length *= 2;
 		}
+		complex a = a.set(1, 0);
+		amp[0] = a;
 		return;
 	}
 
@@ -91,12 +114,26 @@ namespace std
 		try
 		{
 			c[index].H();
+			map<int, complex> tmp;
+			complex half = half.set(1/sqrt(2), 0);
+			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+				if ((itr->first) & (1 << index)) {
+					tmp[itr->first] = (itr->second) * half * (-1);
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * half;
+				}
+				else {
+					tmp[itr->first] = (itr->second) * half;
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * half;
+				}
+			}
+			amp = tmp;
 		}
 		catch (const exception&)
 		{
 			cout << "Index out of range!(H)" << endl;
 			exit(1);
 		}
+
 		return;
 	}
 
@@ -104,6 +141,16 @@ namespace std
 		try
 		{
 			c[index].X();
+			map<int, complex> tmp;
+			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+				}
+				else {
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+				}
+			}
+			amp = tmp;
 		}
 		catch (const exception&)
 		{
@@ -138,6 +185,25 @@ namespace std
 			c[index].e.push_back(e_tmp);
 
 			++gate_id;
+
+			map<int, complex> tmp;
+			complex zero = zero.set(0, 0);
+			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+				if ((itr->first) & (1 << ctrl)) {
+					if ((itr->first) & (1 << index)) {
+						tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+						tmp[(itr->first)] = zero;
+					}
+					else {
+						tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+						tmp[(itr->first)] = zero;
+					}
+				}
+				else {
+					tmp[(itr->first)] = (itr->second);
+				}
+			}
+			amp = tmp;
 		}
 		catch (const exception&)
 		{

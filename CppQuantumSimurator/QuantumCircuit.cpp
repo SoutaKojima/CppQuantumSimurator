@@ -8,61 +8,37 @@
 namespace std
 {
 	void QuantumCircuit::Detection(int n) {
-		try
-		{
-			/*
-			vector<int> count(pattern_length, 0);
+		random_device rd;
+		default_random_engine eng(rd());
+		uniform_real_distribution<double> distr(0, 1);
 
-			for (int i = 0; i < n; ++i) {
-				random_device rd;
-				default_random_engine eng(rd());
-				uniform_real_distribution<double> distr(0, 1);
-
-				vector<Qubit> c_tmp = c;
-				int tmp = 0;
-
-				for (int i = 0; i < c_tmp.size(); ++i) {
-					double r = distr(eng);
-					int result = 0;
-					double zero_prob;
-
-					for (vector<Entangle>::iterator itr = c_tmp[i].e.begin(); itr != c_tmp[i].e.end(); ++itr) {
-						if ((*itr).pair == -1) {
-							zero_prob = c_tmp[i].ket[0].norm();
-							result = (zero_prob > r ? 0 : 1);
-						}
-						else {
-							result = ((*itr).kets[0][0].norm() + (*itr).kets[0][1].norm() > r ? 0 : 1);
-							double radius = complex::Normalize((*itr).kets[result][0], (*itr).kets[result][1]);
-							c_tmp[(*itr).pair].ket[0] = (*itr).kets[result][0] * radius;
-							c_tmp[(*itr).pair].ket[1] = (*itr).kets[result][1] * radius;
-
-							for (vector<Entangle>::iterator var = c_tmp[(*itr).pair].e.begin(); var != c_tmp[(*itr).pair].e.end(); ++var)
-							{
-								if ((*var).id == (*itr).id) {
-									//c_tmp[(*itr).pair].e.erase(var);
-									(*var).pair = -1;
-									break;
-								}
-							}
-						}
-					}
-					tmp += result << i;
-				}
-				++count[tmp];
-			}
-			for (int i = 0; i < pattern_length; ++i) {
-				cout << bitset<8>(i) << '(' << i << ')' << ':';
-				cout << count[i] << endl;
-			}
-			:*/
+		double prob = 0;
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			prob += (itr->second).norm();
 		}
-		catch (const exception&)
-		{
-			cout << "Index out of range!(Detection)" << endl;
+		if (prob < 0.99) {
+			cout << "Sum of Probability is " << prob << ", not 1 !" << endl;
 			exit(1);
 		}
-		return;
+		cout << "Sum of Probability : " << prob << endl;
+
+
+		map<int, int> count;
+		for (int i = 0; i < n; ++i) {
+			double r = distr(eng);
+			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+				if (r < (itr->second).norm()) {
+					count[(itr->first)] = count[(itr->first)] + 1;
+					break;
+				}
+				r -= (itr->second).norm();
+			}
+		}
+
+		for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
+			cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
+			cout << (itr->second) << endl;
+		}
 	}
 
 	void QuantumCircuit::Detection() {
@@ -132,7 +108,7 @@ namespace std
 	}
 
 	void QuantumCircuit::CX(int ctrl, int index) {
-		if (ctrl < 0 or qc_size <= ctrl or index < 0 or qc_size <= index) {
+		if (ctrl < 0 or qc_size <= ctrl or index < 0 or qc_size <= index or ctrl == index) {
 			cout << "Index out of range!(CX)" << endl;
 			exit(1);
 		}

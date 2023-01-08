@@ -25,8 +25,11 @@ namespace std
 		void Amplitude();
 		void H(int index);
 		void X(int index);
+		void Z(int index);
 		void CX(int ctrl, int index);
 		void Swap(int a, int b);
+		void CZ(int a, int b);
+
 
 		QuantumCircuit(int n) {
 			Init(n);

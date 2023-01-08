@@ -6,8 +6,9 @@ int main()
 {
 	QuantumCircuit qc(3);
 
-	qc.H(0);
-	qc.Swap(0, 1);
+	qc.X(0);
+	qc.Z(0);
+	//qc.Swap(0, 1);
 
 	//qc.CX(0, 1);
 	//qc.X(0);

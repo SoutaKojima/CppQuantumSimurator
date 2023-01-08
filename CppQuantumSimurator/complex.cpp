@@ -9,6 +9,13 @@ namespace std
 		return tmp;
 	}
 
+	complex complex::set(double phase) {
+		complex tmp;
+		tmp.re = cos(phase);
+		tmp.im = sin(phase);
+		return tmp;
+	}
+
 	double complex::norm() {
 		return re * re + im * im;
 	}

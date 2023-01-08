@@ -4,16 +4,25 @@ using namespace std;
 
 int main()
 {
-	QuantumCircuit qc(3);
+	QuantumCircuit qc(2);
 
-	qc.X(0);
+
+	//qc.H(0);
+	//qc.Z(0);
+	
+	qc.H(0);
+	qc.H(1);
+
+	qc.CZ(0, 1);
+	qc.H(0);
+	qc.H(1);
+
 	qc.Z(0);
-	//qc.Swap(0, 1);
-
-	//qc.CX(0, 1);
-	//qc.X(0);
-
-	//qc.Detection(1e4);
+	qc.Z(1);
+	qc.CZ(0, 1);
+	qc.H(0);
+	qc.H(1);
+	
 	qc.Amplitude();
 
 	return 0;

@@ -25,8 +25,8 @@ int main_()
 	qc.X(2);
 	qc.H(2);
 
-	qc.Detection(1e4);
-	//qc.Amplitude();
+	//qc.Detection(1e4);
+	qc.Amplitude();
 
 	return 0;
 }

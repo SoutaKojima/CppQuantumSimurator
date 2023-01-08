@@ -26,6 +26,7 @@ namespace std
 		void H(int index);
 		void X(int index);
 		void CX(int ctrl, int index);
+		void Swap(int a, int b);
 
 		QuantumCircuit(int n) {
 			Init(n);

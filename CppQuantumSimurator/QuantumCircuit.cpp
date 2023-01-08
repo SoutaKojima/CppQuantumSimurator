@@ -45,7 +45,8 @@ namespace std
 		double prob = 0;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->second).norm() != 0) {
-				cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
+				cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
+				cout << (itr->second).norm() << " : Amp=";
 				cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
 				prob += (itr->second).norm();
 			}
@@ -126,6 +127,17 @@ namespace std
 			}
 		}
 		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::Swap(int a, int b) {
+		if (a < 0 or qc_size <= a or b < 0 or qc_size <= b or a == b) {
+			cout << "Index out of range!(CX)" << endl;
+			exit(1);
+		}
+		CX(a, b);
+		CX(b, a);
+		CX(a, b);
 		return;
 	}
 }

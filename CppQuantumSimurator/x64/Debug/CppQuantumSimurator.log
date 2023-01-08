@@ -1,3 +1,2 @@
-﻿  Deutsch-JoszaAlgorithm.cpp
-C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\Deutsch-JoszaAlgorithm.cpp(28,15): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+﻿  QuantumMain.cpp
   CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

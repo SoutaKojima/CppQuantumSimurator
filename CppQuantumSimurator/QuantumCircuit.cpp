@@ -56,6 +56,27 @@ namespace std
 		return;
 	}
 
+	void QuantumCircuit::Amplitude(int n) {
+		double prob = 0;
+		map<int, double> mp;
+		int mask = 0;
+		for (int i = 0; i < n; ++i) mask = mask | (1 << i);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->second).norm() != 0) {
+			mp[(itr->first) & mask] = mp[(itr->first) & mask] + (itr->second).norm();}
+		}
+		for (map<int, double>::iterator itr = mp.begin(); itr != mp.end(); ++itr) {
+			if ((itr->second) != 0) {
+				cout << bitset<32>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
+				cout << (itr->second) << endl;
+				prob += (itr->second);
+			}
+		}
+		cout << "Sum of Probability : " << prob << endl;
+		cout << endl;
+		return;
+	}
+
 	void QuantumCircuit::Init(int n) {
 		qc_size = n;
 		complex a = a.set(1, 0);
@@ -113,7 +134,7 @@ namespace std
 		map<int, complex> tmp;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->first) & (1 << index)) {
-				tmp[(itr->first)] = tmp[(itr->first)] + (itr->second)*(-1);
+				tmp[(itr->first)] = tmp[(itr->first)] + (itr->second) * (-1);
 			}
 			else {
 				tmp[(itr->first)] = tmp[(itr->first)] + (itr->second);

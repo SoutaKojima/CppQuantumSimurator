@@ -24,7 +24,7 @@ namespace std {
 		qc.H(2);
 
 		//qc.Detection(1e4);
-		qc.Amplitude();
+		qc.Amplitude(3);
 
 		return;
 	}
@@ -58,9 +58,10 @@ namespace std {
 
 
 	void QuantumAlgorithms::ShorAlgorithm() {
-		QuantumCircuit qc(4);
+		QuantumCircuit qc(12);
 
-		qc.H(0);
+		for(int i=0;i<8;++i) qc.H(i);
+		
 		qc.X(0);
 		qc.H(1);
 		qc.H(2);

@@ -52,6 +52,7 @@ namespace std
 			}
 		}
 		cout << "Sum of Probability : " << prob << endl;
+		cout << endl;
 		return;
 	}
 
@@ -112,10 +113,10 @@ namespace std
 		map<int, complex> tmp;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->first) & (1 << index)) {
-				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second)*(-1);
+				tmp[(itr->first)] = tmp[(itr->first)] + (itr->second)*(-1);
 			}
 			else {
-				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+				tmp[(itr->first)] = tmp[(itr->first)] + (itr->second);
 			}
 		}
 		amp = tmp;

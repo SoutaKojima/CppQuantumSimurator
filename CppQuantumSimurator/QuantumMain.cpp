@@ -2,13 +2,9 @@
 #include "QuantumCircuit.h"
 using namespace std;
 
-int main()
+int main___()
 {
 	QuantumCircuit qc(2);
-
-
-	//qc.H(0);
-	//qc.Z(0);
 	
 	qc.H(0);
 	qc.H(1);
@@ -27,3 +23,6 @@ int main()
 
 	return 0;
 }
+
+
+//ref:https://qiskit.org/textbook/ja/ch-algorithms/grover.html

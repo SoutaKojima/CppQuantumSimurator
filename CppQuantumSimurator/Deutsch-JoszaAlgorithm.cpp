@@ -30,3 +30,6 @@ int main_()
 
 	return 0;
 }
+
+
+//ref:https://qiskit.org/textbook/ja/ch-algorithms/deutsch-jozsa.html

@@ -135,11 +135,9 @@ namespace std
 			if ((itr->first) & (1 << ctrl)) {
 				if ((itr->first) & (1 << index)) {
 					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
-					//tmp[(itr->first)] = zero;
 				}
 				else {
 					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
-					//tmp[(itr->first)] = zero;
 				}
 			}
 			else {

@@ -1,8 +1,7 @@
-#include <iostream>
 #include "QuantumCircuit.h"
 using namespace std;
 
-int main()
+int main____()
 {
 	QuantumCircuit qc(2);
 

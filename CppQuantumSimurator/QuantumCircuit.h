@@ -6,7 +6,7 @@
 #include<random>
 #include<iomanip>
 #include<bitset>
-#include"Qubit.h"
+#include"complex.h"
 
 namespace std
 {

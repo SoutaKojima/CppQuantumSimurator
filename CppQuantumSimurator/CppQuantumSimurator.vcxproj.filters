@@ -18,9 +18,6 @@
     <ClInclude Include="QuantumCircuit.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Qubit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="complex.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -35,19 +32,7 @@
     <ClCompile Include="QuantumMain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Qubit.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="complex.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Deutsch-JoszaAlgorithm.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ShorAlgorithm.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GroverAlgorithm.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="QuantumAlgorithms.cpp">

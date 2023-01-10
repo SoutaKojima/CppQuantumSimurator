@@ -2,6 +2,7 @@
 
 namespace std {
 	void QuantumAlgorithms::DeutschJoszaAlgorithm() {
+		clock_t start = clock();
 		QuantumCircuit qc(4);
 
 		qc.H(0);
@@ -24,13 +25,16 @@ namespace std {
 		qc.H(2);
 
 		//qc.Detection(1e4);
-		qc.Amplitude(3);
-
+		qc.Amplitude();
+		
+		clock_t end = clock();
+		cout << "Time : " << (end - start) << "ms" << endl;
 		return;
 	}
 	//ref:https://qiskit.org/textbook/ja/ch-algorithms/deutsch-jozsa.html
 
 	void QuantumAlgorithms::GroverAlgorithm() {
+		clock_t start = clock();
 		QuantumCircuit qc(2);
 
 		qc.H(0);
@@ -51,6 +55,8 @@ namespace std {
 		qc.H(1);
 
 		qc.Amplitude();
+		clock_t end = clock();
+		cout << "Time : " << (end - start) << "ms" << endl;
 
 		return;
 	}
@@ -58,6 +64,7 @@ namespace std {
 
 
 	void QuantumAlgorithms::ShorAlgorithm() {
+		clock_t start = clock();
 		QuantumCircuit qc(12);
 
 		for(int i=0;i<8;++i) qc.H(i);
@@ -80,8 +87,10 @@ namespace std {
 		qc.X(2);
 		qc.H(2);
 
-		qc.Detection(1e4);
+		qc.Detection((int)1e4);
 		//qc.Amplitude();
+		clock_t end = clock();
+		cout << "Time : " << (end - start) << "ms" << endl;
 
 		return;
 	}

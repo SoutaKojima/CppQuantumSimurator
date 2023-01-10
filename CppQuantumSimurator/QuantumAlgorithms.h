@@ -1,5 +1,6 @@
 #pragma once
 #include"QuantumCircuit.h"
+#include<time.h>
 
 namespace std {
 	class QuantumAlgorithms

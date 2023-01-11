@@ -17,8 +17,8 @@ namespace std
 		int qc_size;
 	public:
 		void Init(int n);
-		void Detection(int n);
-		void Detection();
+		vector<int> Detection(int n);
+		vector<int> Detection();
 		void Amplitude();
 		void Amplitude(int n);
 		void H(int index);

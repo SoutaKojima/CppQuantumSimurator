@@ -7,7 +7,7 @@ namespace std
 		return;
 	}
 
-	void QuantumCircuit::Detection(int n) {
+	vector<int> QuantumCircuit::Detection(int n) {
 		random_device rd;
 		default_random_engine eng(rd());
 		uniform_real_distribution<double> distr(0, 1);
@@ -35,15 +35,18 @@ namespace std
 			}
 		}
 
+		vector<int> v;
 		for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
 			cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
 			cout << (itr->second) << endl;
+			v.push_back(itr->second);
 		}
+
+		return v;
 	}
 
-	void QuantumCircuit::Detection() {
-		Detection(1000);
-		return;
+	vector<int> QuantumCircuit::Detection() {
+		return Detection(1000);
 	}
 
 	void QuantumCircuit::Amplitude() {

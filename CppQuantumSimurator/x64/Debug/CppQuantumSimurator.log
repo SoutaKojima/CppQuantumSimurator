@@ -1,4 +1,2 @@
-﻿  QuantumMachineLearning.cpp
-C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\QuantumMachineLearning.cpp : fatal  error C1041: プログラム データベース 'C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\x64\Debug\vc143.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
-  QuantumMain.cpp
-  コードを生成中...
+﻿  QuantumMain.cpp
+  CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

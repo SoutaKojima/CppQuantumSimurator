@@ -1,11 +1,15 @@
-//#include "QuantumAlgorithms.h"
 #include"QuantumMachineLearning.h"
 using namespace std;
 
 int main()
 {
-	QuantumMachineLearning qml;
+	//QuantumAlgorithms qa;
 	//qa.GroverAlgorithm();
 	//qa.DeutschJoszaAlgorithm();
+
+	QuantumMachineLearning qml;
 	qml.MachineLearningXOR();
+
+
+	
 }

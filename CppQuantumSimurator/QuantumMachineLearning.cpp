@@ -3,7 +3,7 @@
 namespace std {
 	void QuantumMachineLearning::MachineLearningXOR() {
 
-		vector < pair<pair<int, int>, int>> train;
+
 		for (int i = 0; i < 4; ++i) {
 			int a = (i & (1));
 			int b = (i & (1 << 1));
@@ -12,20 +12,17 @@ namespace std {
 		}
 
 		qc.Init(2);
-		//double angle = 0;
 
 
 		thetas.clear();
-		//U_in(_Pi);
-		U_Set();
+		U_Reset();
 
 		for (int i = 0; i < 5; ++i) {
 			cout << "theta" << i << ":" << thetas[i] << endl;
 		}
 		cout << endl;
 
-		qc.Amplitude();
-		qc.Detection((int)1e4);
+		Loss();
 		return;
 	}
 	//ref:https://qiita.com/doiken_/items/1d66fe4d10805532d6a5
@@ -35,7 +32,7 @@ namespace std {
 		qc.Ry(1, asin(p.second));
 	}
 
-	void QuantumMachineLearning::U_Set() {
+	void QuantumMachineLearning::U_Reset() {
 		random_device rd;
 		default_random_engine eng(rd());
 		uniform_real_distribution<double> distr(0, 1);
@@ -64,7 +61,41 @@ namespace std {
 
 	}
 
-	void QuantumMachineLearning::cost() {
+	void QuantumMachineLearning::U_Set() {
+		random_device rd;
+		default_random_engine eng(rd());
+		uniform_real_distribution<double> distr(0, 1);
+		double r;
+		;
+		qc.Ry(0, thetas[0]);
+		qc.Ry(1, thetas[1]);
+
+		qc.CX(0, 1);
+		qc.Rz(1, thetas[2]);
+		qc.CX(0, 1);
+
+		qc.Ry(0, thetas[3]);
+		qc.Ry(1, thetas[4]);
+
+
+	}
+
+	void QuantumMachineLearning::Loss() {
+		qc.Amplitude();
+		for (vector < pair<pair<int, int>, int>>::iterator itr = train.begin(); itr != train.end(); ++itr) {
+			qc.Init(2);
+			U_in(itr->first);
+			U_Set();
+			vector<int> v = qc.Detection((int)1e4);
+			double mean = 0;
+			for (vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
+				mean += (double)distance(v.begin(), it) * (double)(*it);
+			}
+			mean /= v.size();
+			cout << "v.size: " << v.size() << endl;
+			cout << "  mean: " << mean << endl;
+		}
+		
 
 	}
 }

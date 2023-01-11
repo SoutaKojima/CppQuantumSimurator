@@ -26,7 +26,7 @@ namespace std {
 
 		//qc.Detection(1e4);
 		qc.Amplitude();
-		
+
 		clock_t end = clock();
 		cout << "Time : " << (end - start) << "ms" << endl;
 		return;
@@ -67,8 +67,8 @@ namespace std {
 		clock_t start = clock();
 		QuantumCircuit qc(12);
 
-		for(int i=0;i<8;++i) qc.H(i);
-		
+		for (int i = 0; i < 8; ++i) qc.H(i);
+
 		qc.X(0);
 		qc.H(1);
 		qc.H(2);

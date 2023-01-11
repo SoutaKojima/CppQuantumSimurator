@@ -130,11 +130,13 @@
     <ClInclude Include="complex.h" />
     <ClInclude Include="QuantumAlgorithms.h" />
     <ClInclude Include="QuantumCircuit.h" />
+    <ClInclude Include="QuantumMachineLearning.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="QuantumAlgorithms.cpp" />
     <ClCompile Include="QuantumCircuit.cpp" />
+    <ClCompile Include="QuantumMachineLearning.cpp" />
     <ClCompile Include="QuantumMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -24,8 +24,9 @@ namespace std {
 		qc.X(2);
 		qc.H(2);
 
-		//qc.Detection(1e4);
+		
 		qc.Amplitude();
+		qc.Detection();
 
 		clock_t end = clock();
 		cout << "Time : " << (end - start) << "ms" << endl;
@@ -55,6 +56,8 @@ namespace std {
 		qc.H(1);
 
 		qc.Amplitude();
+		qc.Detection();
+
 		clock_t end = clock();
 		cout << "Time : " << (end - start) << "ms" << endl;
 

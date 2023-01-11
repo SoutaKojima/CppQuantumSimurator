@@ -9,6 +9,7 @@ namespace std {
 	public:
 		void DeutschJoszaAlgorithm();
 		void GroverAlgorithm();
+		void SudokuAlgorithm();
 		void ShorAlgorithm();
 	};
 

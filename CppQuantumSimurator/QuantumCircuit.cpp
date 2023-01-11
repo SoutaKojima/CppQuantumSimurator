@@ -243,4 +243,74 @@ namespace std
 		amp = tmp;
 		return;
 	}
+
+	void QuantumCircuit::C4X(int ctrl1, int ctrl2, int ctrl3, int ctrl4, int index) {
+		set<int> s;
+		s.insert(ctrl1);
+		s.insert(ctrl2);
+		s.insert(ctrl3);
+		s.insert(ctrl4);
+		s.insert(index);
+		int max = *(s.rbegin());
+		int min = *(s.begin());
+		if (min < 0 or qc_size <= max or min == max) {
+			cout << "Index out of range!(C4X)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex zero = zero.set(0, 0);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if (((itr->first) & (1 << ctrl1)) 
+				and ((itr->first) & (1 << ctrl2)) 
+				and ((itr->first) & (1 << ctrl3)) 
+				and ((itr->first) & (1 << ctrl4))) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+				}
+				else {
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+				}
+			}
+			else {
+				tmp[(itr->first)] = (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::C3Z(int ctrl1, int ctrl2, int ctrl3, int index) {
+		set<int> s;
+		s.insert(ctrl1);
+		s.insert(ctrl2);
+		s.insert(ctrl3);
+		s.insert(index);
+		int max = *(s.rbegin());
+		int min = *(s.begin());
+		if (min < 0 or qc_size <= max or min == max) {
+			cout << "Index out of range!(C4X)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex zero = zero.set(0, 0);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if (((itr->first) & (1 << ctrl1))
+				and ((itr->first) & (1 << ctrl2))
+				and ((itr->first) & (1 << ctrl3))) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first)] = tmp[(itr->first)] + (itr->second) * (-1);
+				}
+				else {
+					tmp[(itr->first)] = tmp[(itr->first)] + (itr->second);
+				}
+			}
+			else {
+				tmp[(itr->first)] = (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
 }

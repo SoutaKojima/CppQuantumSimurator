@@ -62,6 +62,43 @@ namespace std {
 	}
 	//ref:https://qiskit.org/textbook/ja/ch-algorithms/grover.html
 
+	void QuantumAlgorithms::SudokuAlgorithm() {
+		clock_t start = clock();
+		QuantumCircuit qc(9);
+
+		for (int i = 0; i < 4; ++i) qc.H(i);
+		
+		qc.X(8);
+		qc.H(8);
+
+		qc.CX(0, 4);
+		qc.CX(1, 4);
+		qc.CX(0, 5);
+		qc.CX(2, 5);
+		qc.CX(1, 6);
+		qc.CX(3, 6);
+		qc.CX(2, 7);
+		qc.CX(3, 7);
+
+		qc.C4X(4, 5, 6, 7, 8);
+
+		qc.CX(0, 4);
+		qc.CX(1, 4);
+		qc.CX(0, 5);
+		qc.CX(2, 5);
+		qc.CX(1, 6);
+		qc.CX(3, 6);
+		qc.CX(2, 7);
+		qc.CX(3, 7);
+
+
+		qc.Amplitude();
+		clock_t end = clock();
+		cout << "Time : " << (end - start) << "ms" << endl;
+
+		return;
+	}
+
 
 	void QuantumAlgorithms::ShorAlgorithm() {
 		clock_t start = clock();

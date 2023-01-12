@@ -7,10 +7,13 @@ namespace std
 		return;
 	}
 
-	vector<int> QuantumCircuit::Detection(int n) {
+	vector<int> QuantumCircuit::Detection(int size, int n) {
 		random_device rd;
 		default_random_engine eng(rd());
 		uniform_real_distribution<double> distr(0, 1);
+
+		int mask = 0;
+		for (int i = 0; i < size; ++i) mask = mask | (1 << i);
 
 		double prob = 0;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
@@ -28,7 +31,8 @@ namespace std
 			double r = distr(eng);
 			for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 				if (r < (itr->second).norm()) {
-					count[(itr->first)] = count[(itr->first)] + 1;
+					//count[(itr->first)] = count[(itr->first)] + 1;
+					count[(itr->first) & mask] = count[(itr->first) & mask] + 1;
 					break;
 				}
 				r -= (itr->second).norm();
@@ -37,7 +41,7 @@ namespace std
 
 		vector<int> v;
 		for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
-			cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << ':';
+			cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << ':';
 			cout << (itr->second) << endl;
 			v.push_back(itr->second);
 		}
@@ -45,15 +49,19 @@ namespace std
 		return v;
 	}
 
+	vector<int> QuantumCircuit::Detection(int size) {
+		return Detection(size, 10000);
+	}
+
 	vector<int> QuantumCircuit::Detection() {
-		return Detection(10000);
+		return Detection(qc_size, 10000);
 	}
 
 	void QuantumCircuit::Amplitude() {
 		double prob = 0;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->second).norm() != 0) {
-				cout << bitset<8>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
+				cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
 				cout << (itr->second).norm() << " : Amp=";
 				cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
 				prob += (itr->second).norm();
@@ -64,11 +72,11 @@ namespace std
 		return;
 	}
 
-	void QuantumCircuit::Amplitude(int n) {
+	void QuantumCircuit::Amplitude(int size) {
 		double prob = 0;
 		map<int, double> mp;
 		int mask = 0;
-		for (int i = 0; i < n; ++i) mask = mask | (1 << i);
+		for (int i = 0; i < size; ++i) mask = mask | (1 << i);
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->second).norm() != 0) {
 				mp[(itr->first) & mask] = mp[(itr->first) & mask] + (itr->second).norm();
@@ -76,7 +84,7 @@ namespace std
 		}
 		for (map<int, double>::iterator itr = mp.begin(); itr != mp.end(); ++itr) {
 			if ((itr->second) != 0) {
-				cout << bitset<32>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
+				cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
 				cout << (itr->second) << endl;
 				prob += (itr->second);
 			}
@@ -261,9 +269,9 @@ namespace std
 		map<int, complex> tmp;
 		complex zero = zero.set(0, 0);
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
-			if (((itr->first) & (1 << ctrl1)) 
-				and ((itr->first) & (1 << ctrl2)) 
-				and ((itr->first) & (1 << ctrl3)) 
+			if (((itr->first) & (1 << ctrl1))
+				and ((itr->first) & (1 << ctrl2))
+				and ((itr->first) & (1 << ctrl3))
 				and ((itr->first) & (1 << ctrl4))) {
 				if ((itr->first) & (1 << index)) {
 					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);

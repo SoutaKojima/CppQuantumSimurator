@@ -1,1 +1,7 @@
-﻿  CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe
+﻿  QuantumAlgorithms.cpp
+  QuantumCircuit.cpp
+  QuantumMachineLearning.cpp
+C:\Users\chemical\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\QuantumMachineLearning.cpp(68,10): warning C4101: 'r': ローカル変数は 1 度も使われていません。
+  QuantumMain.cpp
+  コードを生成中...
+  CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

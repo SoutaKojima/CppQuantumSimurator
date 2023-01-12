@@ -24,7 +24,7 @@ namespace std {
 		qc.X(2);
 		qc.H(2);
 
-		
+
 		qc.Amplitude();
 		qc.Detection();
 
@@ -70,32 +70,43 @@ namespace std {
 		QuantumCircuit qc(9);
 
 		for (int i = 0; i < 4; ++i) qc.H(i);
-		
-		qc.X(8);
-		qc.H(8);
 
-		qc.CX(0, 4);
-		qc.CX(1, 4);
-		qc.CX(0, 5);
-		qc.CX(2, 5);
-		qc.CX(1, 6);
-		qc.CX(3, 6);
-		qc.CX(2, 7);
-		qc.CX(3, 7);
+		for (int j = 0; j < 2; ++j) {
+			qc.X(8);
+			qc.H(8);
 
-		qc.C4X(4, 5, 6, 7, 8);
+			qc.CX(0, 4);
+			qc.CX(1, 4);
+			qc.CX(0, 5);
+			qc.CX(2, 5);
+			qc.CX(1, 6);
+			qc.CX(3, 6);
+			qc.CX(2, 7);
+			qc.CX(3, 7);
 
-		qc.CX(0, 4);
-		qc.CX(1, 4);
-		qc.CX(0, 5);
-		qc.CX(2, 5);
-		qc.CX(1, 6);
-		qc.CX(3, 6);
-		qc.CX(2, 7);
-		qc.CX(3, 7);
+			qc.C4X(4, 5, 6, 7, 8);
 
+			qc.CX(0, 4);
+			qc.CX(1, 4);
+			qc.CX(0, 5);
+			qc.CX(2, 5);
+			qc.CX(1, 6);
+			qc.CX(3, 6);
+			qc.CX(2, 7);
+			qc.CX(3, 7);
 
-		qc.Amplitude();
+			for (int i = 0; i < 4; ++i) qc.H(i);
+			for (int i = 0; i < 4; ++i) qc.X(i);
+			qc.C3Z(1, 2, 3, 0);
+			for (int i = 0; i < 4; ++i) qc.X(i);
+			for (int i = 0; i < 4; ++i) qc.H(i);
+
+			qc.Amplitude();
+		}
+
+		qc.Amplitude(4);
+		qc.Detection(4);
+
 		clock_t end = clock();
 		cout << "Time : " << (end - start) << "ms" << endl;
 

@@ -18,7 +18,8 @@ namespace std
 		int qc_size;
 	public:
 		void Init(int n);
-		vector<int> Detection(int n);
+		vector<int> Detection(int size, int n);
+		vector<int> Detection(int size);
 		vector<int> Detection();
 		void Amplitude();
 		void Amplitude(int n);
@@ -28,8 +29,8 @@ namespace std
 		void CX(int ctrl, int index);
 		void Swap(int a, int b);
 		void CZ(int a, int b);
-		void Ry(int index,double theta);
-		void Rz(int index,double theta);
+		void Ry(int index, double theta);
+		void Rz(int index, double theta);
 		void C4X(int ctrl1, int ctrl2, int ctrl3, int ctrl4, int index);
 		void C3Z(int ctrl1, int ctrl2, int ctrl3, int index);
 

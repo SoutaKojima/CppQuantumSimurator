@@ -143,6 +143,26 @@ namespace std
 		return;
 	}
 
+	void QuantumCircuit::Y(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(X)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex i = i.set(0, 1);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] - i * (itr->second);
+			}
+			else {
+				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + i * (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
 	void QuantumCircuit::Z(int index) {
 		if (index < 0 or qc_size <= index) {
 			cout << "Index out of range!(X)" << endl;
@@ -187,16 +207,31 @@ namespace std
 		return;
 	}
 
-	void QuantumCircuit::Swap(int a, int b) {
-		if (a < 0 or qc_size <= a or b < 0 or qc_size <= b or a == b) {
-			cout << "Index out of range!(Swap)" << endl;
+	void QuantumCircuit::CY(int ctrl, int index) {
+		if (ctrl < 0 or qc_size <= ctrl or index < 0 or qc_size <= index or ctrl == index) {
+			cout << "Index out of range!(CY)" << endl;
 			exit(1);
 		}
-		CX(a, b);
-		CX(b, a);
-		CX(a, b);
+
+		map<int, complex> tmp;
+		complex i = i.set(0, 1);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << ctrl)) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * i * (-1);
+				}
+				else {
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * i;
+				}
+			}
+			else {
+				tmp[(itr->first)] = (itr->second);
+			}
+		}
+		amp = tmp;
 		return;
 	}
+
 
 	void QuantumCircuit::CZ(int a, int b) {
 		if (a < 0 or qc_size <= a or b < 0 or qc_size <= b or a == b) {
@@ -209,9 +244,45 @@ namespace std
 		return;
 	}
 
+	void QuantumCircuit::Swap(int a, int b) {
+		if (a < 0 or qc_size <= a or b < 0 or qc_size <= b or a == b) {
+			cout << "Index out of range!(Swap)" << endl;
+			exit(1);
+		}
+		CX(a, b);
+		CX(b, a);
+		CX(a, b);
+		return;
+	}
+
+
+	void QuantumCircuit::Rx(int index, double theta) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Rx)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex c = c.set(cos(theta / 2), 0);
+		complex s = c.set(sin(theta / 2), 0);
+		complex mi = mi.set(0, -1);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * c;
+				tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second) * s * mi;
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * c;
+				tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second) * s * mi;
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
 	void QuantumCircuit::Ry(int index, double theta) {
 		if (index < 0 or qc_size <= index) {
-			cout << "Index out of range!(H)" << endl;
+			cout << "Index out of range!(Ry)" << endl;
 			exit(1);
 		}
 
@@ -231,21 +302,135 @@ namespace std
 		amp = tmp;
 		return;
 	}
+
 	void QuantumCircuit::Rz(int index, double theta) {
 		if (index < 0 or qc_size <= index) {
-			cout << "Index out of range!(H)" << endl;
+			cout << "Index out of range!(Rz)" << endl;
 			exit(1);
 		}
 
 		map<int, complex> tmp;
-		complex minus = minus.set(cos(theta / 2), sin(theta / 2));
-		complex plus = plus.set(cos(theta / 2), (-1) * sin(theta / 2));
+		complex plus = plus.set(cos(theta / 2), sin(theta / 2));
+		complex minus = minus.set(cos(theta / 2), (-1) * sin(theta / 2));
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->first) & (1 << index)) {
-				tmp[itr->first] = tmp[itr->first] + (itr->second) * minus;
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * plus;
 			}
 			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * minus;
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::S(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(S)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex i = i.set(0, 1);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * i;
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::Sdag(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Sdag)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex i = i.set(0, 1);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * i * (-1);
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::T(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(T)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		double theta = _Pi / 4;
+		complex plus = plus.set(cos(theta), sin(theta));
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
 				tmp[itr->first] = tmp[itr->first] + (itr->second) * plus;
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::Tdag(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Tdag)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		double theta = _Pi / 4;
+		complex plus = plus.set(cos(theta), sin(theta));
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * plus * (-1);
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::CCX(int ctrl1, int ctrl2, int index) {
+		set<int> s;
+		s.insert(ctrl1);
+		s.insert(ctrl2);
+		s.insert(index);
+		int max = *(s.rbegin());
+		int min = *(s.begin());
+		if (min < 0 or qc_size <= max or min == max) {
+			cout << "Index out of range!(C4X)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex zero = zero.set(0, 0);
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if (((itr->first) & (1 << ctrl1)) and ((itr->first) & (1 << ctrl2))) {
+				if ((itr->first) & (1 << index)) {
+					tmp[(itr->first) & ~(1 << index)] = tmp[(itr->first) & ~(1 << index)] + (itr->second);
+				}
+				else {
+					tmp[(itr->first) | (1 << index)] = tmp[(itr->first) | (1 << index)] + (itr->second);
+				}
+			}
+			else {
+				tmp[(itr->first)] = (itr->second);
 			}
 		}
 		amp = tmp;

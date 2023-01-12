@@ -46,7 +46,7 @@ namespace std
 	}
 
 	vector<int> QuantumCircuit::Detection() {
-		return Detection(1000);
+		return Detection(10000);
 	}
 
 	void QuantumCircuit::Amplitude() {

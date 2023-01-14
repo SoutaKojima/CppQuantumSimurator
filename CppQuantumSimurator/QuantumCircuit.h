@@ -23,6 +23,7 @@ namespace std
 		vector<int> Detection();
 		void Amplitude();
 		void Amplitude(int n);
+		void I(int index);
 		void H(int index);
 		void X(int index);
 		void Y(int index);
@@ -38,6 +39,10 @@ namespace std
 		void Sdag(int index);
 		void T(int index);
 		void Tdag(int index);
+		void Phase(int index, double theta);
+		void U3(int index, double theta,double phi,double lambda);
+		void U2(int index, double phi,double lambda);
+		void U1(int index, double lambda);
 		void CCX(int ctrl1, int ctrl2, int index);
 		void C4X(int ctrl1, int ctrl2, int ctrl3, int ctrl4, int index);
 		void C3Z(int ctrl1, int ctrl2, int ctrl3, int index);

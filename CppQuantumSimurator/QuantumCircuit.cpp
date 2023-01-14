@@ -102,6 +102,15 @@ namespace std
 		return;
 	}
 
+	void QuantumCircuit::I(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(I)" << endl;
+			exit(1);
+		}
+
+		return;
+	}
+
 	void QuantumCircuit::H(int index) {
 		if (index < 0 or qc_size <= index) {
 			cout << "Index out of range!(H)" << endl;
@@ -403,6 +412,57 @@ namespace std
 			}
 		}
 		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::Phase(int index, double theta) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Rz)" << endl;
+			exit(1);
+		}
+
+		map<int, complex> tmp;
+		complex plus = plus.set(cos(theta), sin(theta));
+		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
+			if ((itr->first) & (1 << index)) {
+				tmp[itr->first] = tmp[itr->first] + (itr->second) * plus;
+			}
+			else {
+				tmp[itr->first] = tmp[itr->first] + (itr->second);
+			}
+		}
+		amp = tmp;
+		return;
+	}
+
+	void QuantumCircuit::U3(int index, double theta, double phi, double lambda) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Rz)" << endl;
+			exit(1);
+		}
+
+		Rz(index, lambda);
+		Ry(index, theta);
+		Rz(index, phi);
+
+		return;
+	}
+
+	void QuantumCircuit::U2(int index, double phi, double lambda) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Rz)" << endl;
+			exit(1);
+		}
+
+		U3(index, _Pi / 2, phi, lambda);
+		return;
+	}
+	void QuantumCircuit::U1(int index, double lambda) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(Rz)" << endl;
+			exit(1);
+		}
+		U3(index, 0, 0, lambda);
 		return;
 	}
 

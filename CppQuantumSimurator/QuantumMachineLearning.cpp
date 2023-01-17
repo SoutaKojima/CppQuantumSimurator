@@ -13,6 +13,19 @@ namespace std {
 
 
 		thetas.clear();
+
+		vector<double> train(qc.GetSize() * 2, 0);
+		//vector<vector<double>> data;
+
+		train = { 0,0,1,0 };
+		qml.data.push_back(train);
+		train = { 0,1,0,1 };
+		qml.data.push_back(train);
+		train = { 1,0,0,1 };
+		qml.data.push_back(train);
+		train = { 1,1,1,0 };
+		qml.data.push_back(train);
+
 		//U_Reset();
 		for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 			U_in(*itr);

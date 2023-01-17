@@ -2,10 +2,10 @@
 
 namespace std
 {
-	QuantumCircuit::QuantumCircuit()
+	/*QuantumCircuit::QuantumCircuit()
 	{
 		return;
-	}
+	}*/
 
 	vector<int> QuantumCircuit::Detection(int size, int n) {
 		random_device rd;
@@ -94,13 +94,14 @@ namespace std
 		return;
 	}
 
-	void QuantumCircuit::Init(int n) {
-		amp.clear();
-		qc_size = n;
-		complex a = a.set(1, 0);
-		amp[0] = a;
-		return;
-	}
+
+	//void QuantumCircuit::Init(int n) {
+	//	amp.clear();
+	//	//qc_size = n;
+	//	complex a = a.set(1, 0);
+	//	amp[0] = a;
+	//	return;
+	//}
 
 	void QuantumCircuit::I(int index) {
 		if (index < 0 or qc_size <= index) {

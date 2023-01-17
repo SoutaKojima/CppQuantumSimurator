@@ -16,8 +16,8 @@ namespace std {
 		void U_Reset();
 		void Loss();
 
-		QuantumMachineLearning() {
-			qc.Init(2);
+		QuantumMachineLearning(int n) :qc(n) {
+			//qc.Init(2);
 		};
 	};
 

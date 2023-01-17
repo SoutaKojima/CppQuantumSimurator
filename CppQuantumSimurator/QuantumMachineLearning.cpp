@@ -11,7 +11,7 @@ namespace std {
 			train.push_back(make_pair(make_pair(a, b), c));
 		}
 
-		qc.Init(2);
+		//qc.Init(2);
 
 
 		thetas.clear();
@@ -65,8 +65,7 @@ namespace std {
 		random_device rd;
 		default_random_engine eng(rd());
 		uniform_real_distribution<double> distr(0, 1);
-		double r;
-		;
+
 		qc.Ry(0, thetas[0]);
 		qc.Ry(1, thetas[1]);
 
@@ -83,7 +82,7 @@ namespace std {
 	void QuantumMachineLearning::Loss() {
 		qc.Amplitude();
 		for (vector < pair<pair<int, int>, int>>::iterator itr = train.begin(); itr != train.end(); ++itr) {
-			qc.Init(2);
+			//qc.Init(2);
 			U_in(itr->first);
 			U_Set();
 			vector<int> v = qc.Detection((int)1e4);

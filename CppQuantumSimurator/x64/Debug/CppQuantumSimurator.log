@@ -1,5 +1,2 @@
-﻿  QuantumCircuit.cpp
-  QuantumMain.cpp
-  コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-  CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe
+﻿  QuantumMain.cpp
+  CppQuantumSimurator.vcxproj -> C:\Users\koji-\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

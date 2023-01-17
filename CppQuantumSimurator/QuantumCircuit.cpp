@@ -567,4 +567,8 @@ namespace std
 		amp = tmp;
 		return;
 	}
+
+	int QuantumCircuit::GetSize() {
+		return qc_size;
+	}
 }

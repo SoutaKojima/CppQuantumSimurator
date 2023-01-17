@@ -47,6 +47,7 @@ namespace std
 		void CCX(int ctrl1, int ctrl2, int index);
 		void C4X(int ctrl1, int ctrl2, int ctrl3, int ctrl4, int index);
 		void C3Z(int ctrl1, int ctrl2, int ctrl3, int index);
+		int GetSize();
 
 		//QuantumCircuit();
 		QuantumCircuit(const int n){

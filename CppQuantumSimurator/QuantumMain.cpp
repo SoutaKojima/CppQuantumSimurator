@@ -3,17 +3,19 @@ using namespace std;
 
 int main()
 {
-	//QuantumAlgorithms qa;
-	//qa.SudokuAlgorithm();
-
-	/*QuantumCircuit qc(1);
-
-	qc.H(0);
-	qc.U3(0, _Pi, _Pi / 2, _Pi / 4);
-
-	qc.Amplitude();*/
-
 	QuantumMachineLearning qml(2);
+
+	vector<double> train(qml.qc.GetSize() * 2, 0);
+	//vector<vector<double>> data;
+
+	train = { 0,0,1,0 };
+	qml.data.push_back(train);
+	train = { 0,1,0,1 };
+	qml.data.push_back(train);
+	train = { 1,0,0,1 };
+	qml.data.push_back(train);
+	train = { 1,1,1,0 };
+	qml.data.push_back(train);
 
 	qml.qc.H(0);
 	qml.qc.Amplitude();

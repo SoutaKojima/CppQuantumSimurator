@@ -18,13 +18,13 @@ namespace std {
 		//vector<vector<double>> data;
 
 		train = { 0,0,1,0 };
-		qml.data.push_back(train);
+		data.push_back(train);
 		train = { 0,1,0,1 };
-		qml.data.push_back(train);
+		data.push_back(train);
 		train = { 1,0,0,1 };
-		qml.data.push_back(train);
+		data.push_back(train);
 		train = { 1,1,1,0 };
-		qml.data.push_back(train);
+		data.push_back(train);
 
 		//U_Reset();
 		for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
@@ -55,24 +55,8 @@ namespace std {
 
 	}
 
-	void QuantumMachineLearning::Theta_Reset() {
-		random_device rd;
-		default_random_engine eng(rd());
-		uniform_real_distribution<double> distr(0, 1);
-		double r;
 
-		thetas.clear();
-		for (int i = 0; i < rep; ++i) {
-			vector<double> tmp;
-			for (int j = 0; j < qc.GetSize(); ++j) {
-				r = 2 * _Pi * distr(eng);
-				tmp.push_back(r);
-			}
-			thetas.push_back(tmp);
-		}
-	}
-
-	void QuantumMachineLearning::U_loc() {
+	void QuantumMachineLearning::U_loc(vector<double> v) {
 
 	}
 	
@@ -110,5 +94,23 @@ namespace std {
 		//}
 		
 
+	}
+
+
+	void QuantumMachineLearning::Theta_Reset() {
+		random_device rd;
+		default_random_engine eng(rd());
+		uniform_real_distribution<double> distr(0, 1);
+		double r;
+
+		thetas.clear();
+		for (int i = 0; i < rep; ++i) {
+			vector<double> tmp;
+			for (int j = 0; j < qc.GetSize(); ++j) {
+				r = 2 * _Pi * distr(eng);
+				tmp.push_back(r);
+			}
+			thetas.push_back(tmp);
+		}
 	}
 }

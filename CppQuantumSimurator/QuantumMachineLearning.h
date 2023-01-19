@@ -16,10 +16,9 @@ namespace std {
 		void MachineLearningXOR();
 		void U_in(vector<double>);
 		void U_ent();
-		void U_loc();
-		//void U_Set();
-		void Theta_Reset();
+		void U_loc(vector<double>);
 		void Loss();
+		void Theta_Reset();
 
 		QuantumMachineLearning(int n,int r) :qc(n),rep(r) {
 			//qc.Init(2);

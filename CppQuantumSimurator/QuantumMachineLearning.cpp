@@ -2,20 +2,7 @@
 
 namespace std {
 	void QuantumMachineLearning::MachineLearningXOR() {
-		/*for (int i = 0; i < 4; ++i) {
-			int a = (i & (1));
-			int b = (i & (1 << 1));
-			int c = a ^ b;
-			train.push_back(make_pair(make_pair(a, b), c));
-		}*/
-
-		//qc.Init(2);
-
-
-		thetas.clear();
-
 		vector<double> train(qc.GetSize() * 2, 0);
-		//vector<vector<double>> data;
 
 		train = { 0,0,1,0 };
 		data.push_back(train);
@@ -26,25 +13,34 @@ namespace std {
 		train = { 1,1,1,0 };
 		data.push_back(train);
 
-		//U_Reset();
+		Theta_Reset();
+
 		for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 			U_in(*itr);
 		}
 
-		/*for (int i = 0; i < 5; ++i) {
-			cout << "theta" << i << ":" << thetas[i] << endl;
-		}*/
-		//cout << endl;
+		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+			U_ent();
+			U_loc(*itr);
+		}
 
 		Loss();
 		return;
 	}
-	//ref:https://qiita.com/doiken_/items/1d66fe4d10805532d6a5
+	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
+
+	void MachineLearningXRegression() {
+
+	}
+	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
+	//ref:https://qiita.com/Ugo-Nama/items/04814a13c9ea84978a4c
+	//ref:https://arxiv.org/pdf/1804.11326.pdf
+	//ref:http://www.cs.utoronto.ca/~hinton/absps/naturebp.pdf
 
 	void QuantumMachineLearning::U_in(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Ry(i, asin(v[i]));
 			qc.Rz(i, acos(v[i] * v[i]));
+			qc.Ry(i, asin(v[i]));
 		}
 	}
 
@@ -57,9 +53,12 @@ namespace std {
 
 
 	void QuantumMachineLearning::U_loc(vector<double> v) {
-
+		for (int i = 0; i < qc.GetSize(); ++i) {
+			qc.Rz(i, acos(v[i] * v[i]));
+			qc.Ry(i, asin(v[i]));
+		}
 	}
-	
+
 	/*void QuantumMachineLearning::U_Set() {
 		random_device rd;
 		default_random_engine eng(rd());
@@ -92,7 +91,7 @@ namespace std {
 		//	cout << "v.size: " << v.size() << endl;
 		//	cout << "  mean: " << mean << endl;
 		//}
-		
+
 
 	}
 

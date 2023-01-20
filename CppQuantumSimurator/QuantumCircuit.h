@@ -17,13 +17,12 @@ namespace std
 		map<int, complex> amp;
 		int qc_size;
 	public:
-		//void Init(int n);
+		void Init(int n);
 		vector<int> Detection(int size, int n);
 		vector<int> Detection(int size);
 		vector<int> Detection();
-		void Amplitude();
-		void Amplitude(int n);
-		//void Init(int n);
+		vector<complex> Amplitude();
+		vector<double> Amplitude(int n);
 		void I(int index);
 		void H(int index);
 		void X(int index);
@@ -49,7 +48,6 @@ namespace std
 		void C3Z(int ctrl1, int ctrl2, int ctrl3, int index);
 		int GetSize();
 
-		//QuantumCircuit();
 		QuantumCircuit(const int n){
 			amp.clear();
 			qc_size = n;

@@ -2,10 +2,12 @@
 
 namespace std
 {
-	/*QuantumCircuit::QuantumCircuit()
-	{
+	void QuantumCircuit::Init(int n) {
+		amp.clear();
+		complex a = a.set(1, 0);
+		amp[0] = a;
 		return;
-	}*/
+	}
 
 	vector<int> QuantumCircuit::Detection(int size, int n) {
 		random_device rd;
@@ -46,6 +48,8 @@ namespace std
 			v.push_back(itr->second);
 		}
 
+		v.push_back(n);
+
 		return v;
 	}
 
@@ -57,13 +61,15 @@ namespace std
 		return Detection(qc_size, 10000);
 	}
 
-	void QuantumCircuit::Amplitude() {
+	vector<complex> QuantumCircuit::Amplitude() {
 		double prob = 0;
+		vector<complex>v;
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->second).norm() != 0) {
 				cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
 				cout << (itr->second).norm() << " : Amp=";
 				cout << (itr->second).re << " + " << (itr->second).im << "i" << endl;
+				v.push_back(itr->second);
 				prob += (itr->second).norm();
 			}
 		}
@@ -72,10 +78,11 @@ namespace std
 		return;
 	}
 
-	void QuantumCircuit::Amplitude(int size) {
+	vector<double> QuantumCircuit::Amplitude(int size) {
 		double prob = 0;
 		map<int, double> mp;
 		int mask = 0;
+		vector<double> v;
 		for (int i = 0; i < size; ++i) mask = mask | (1 << i);
 		for (map<int, complex>::iterator itr = amp.begin(); itr != amp.end(); ++itr) {
 			if ((itr->second).norm() != 0) {
@@ -86,22 +93,17 @@ namespace std
 			if ((itr->second) != 0) {
 				cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << " : Prob=";
 				cout << (itr->second) << endl;
+				v.push_back(itr->second);
 				prob += (itr->second);
 			}
 		}
 		cout << "Sum of Probability : " << prob << endl;
 		cout << endl;
-		return;
+		return v;
 	}
 
 
-	//void QuantumCircuit::Init(int n) {
-	//	amp.clear();
-	//	//qc_size = n;
-	//	complex a = a.set(1, 0);
-	//	amp[0] = a;
-	//	return;
-	//}
+
 
 	void QuantumCircuit::I(int index) {
 		if (index < 0 or qc_size <= index) {

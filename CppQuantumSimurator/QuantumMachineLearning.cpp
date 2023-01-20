@@ -15,16 +15,18 @@ namespace std {
 
 		Theta_Reset();
 
-		for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
-			U_in(*itr);
+		for (int i = 0; i < epoc; ++i) {
+			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
+				U_in(*itr);
+			}
+
+			for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+				U_ent();
+				U_loc(*itr);
+			}
+			Loss();
 		}
 
-		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
-			U_ent();
-			U_loc(*itr);
-		}
-
-		Loss();
 		return;
 	}
 	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
@@ -36,6 +38,7 @@ namespace std {
 	//ref:https://qiita.com/Ugo-Nama/items/04814a13c9ea84978a4c
 	//ref:https://arxiv.org/pdf/1804.11326.pdf
 	//ref:http://www.cs.utoronto.ca/~hinton/absps/naturebp.pdf
+	//ref:https://qiita.com/tky823/items/c2c69a5f69d9cf8ca751
 
 	void QuantumMachineLearning::U_in(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
@@ -59,40 +62,19 @@ namespace std {
 		}
 	}
 
-	/*void QuantumMachineLearning::U_Set() {
-		random_device rd;
-		default_random_engine eng(rd());
-		uniform_real_distribution<double> distr(0, 1);
-
-		qc.Ry(0, thetas[0]);
-		qc.Ry(1, thetas[1]);
-
-		qc.CX(0, 1);
-		qc.Rz(1, thetas[2]);
-		qc.CX(0, 1);
-
-		qc.Ry(0, thetas[3]);
-		qc.Ry(1, thetas[4]);
-	}*/
-
 	void QuantumMachineLearning::Loss() {
-		qc.Amplitude();
+		vector<int> v = qc.Detection();
+		for (int i = 2; i < qc.GetSize(); ++i) {
+			if (i & 1) {
+				v[1] += v[i];
+			}
+			else {
+				v[0] += v[i];
+			}
+		}
 
-		//for (vector < pair<pair<int, int>, int>>::iterator itr = train.begin(); itr != train.end(); ++itr) {
-		//	//qc.Init(2);
-		//	U_in(itr->first);
-		//	U_Set();
-		//	vector<int> v = qc.Detection((int)1e4);
-		//	double mean = 0;
-		//	for (vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		//		mean += (double)distance(v.begin(), it) * (double)(*it);
-		//	}
-		//	mean /= v.size();
-		//	cout << "v.size: " << v.size() << endl;
-		//	cout << "  mean: " << mean << endl;
-		//}
-
-
+		double p0 = (double)v[0] / (double)v[qc.GetSize()];
+		double p1 = (double)v[1] / (double)v[qc.GetSize()];
 	}
 
 

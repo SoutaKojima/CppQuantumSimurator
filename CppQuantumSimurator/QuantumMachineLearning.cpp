@@ -31,7 +31,39 @@ namespace std {
 	}
 	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
 
-	void MachineLearningRegression() {
+	void QuantumMachineLearning::MachineLearningRegression() {
+		vector<double> train;
+
+		ifstream ifs("data/sin_curve.dat");
+
+		double d;
+		while (ifs) {
+			ifs >> d;
+			train.push_back(d);
+			if (train.size() == 2) {
+				data.push_back(train);
+				train.clear();
+			}
+		}
+		cout << "data size:" << data.size() << endl;
+
+		Theta_Reset();
+		cout << "reset complete" << endl;
+		ShowRegression(0);
+
+		/*for (int i = 0; i < epoc; ++i) {
+			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
+				U_in(*itr);
+			}
+
+			for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+				U_ent();
+				U_loc(*itr);
+			}
+			Loss();
+		}*/
+
+		return;
 
 	}
 	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
@@ -57,8 +89,8 @@ namespace std {
 
 	void QuantumMachineLearning::U_loc(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, acos(v[i] * v[i]));
-			qc.Ry(i, asin(v[i]));
+			qc.Rz(i, v[i] * v[i]);
+			qc.Ry(i, v[i]);
 		}
 	}
 
@@ -97,5 +129,72 @@ namespace std {
 			}
 			thetas.push_back(tmp);
 		}
+	}
+
+	void QuantumMachineLearning::ShowRegression(int s) {
+		ofstream text_data;
+		text_data.open("data/ShowRegression" + to_string(s) + ".dat");
+
+		for (double d = -1; d <= 1; d += 0.01) {
+			qc.Init();
+			for (int i = 0; i < qc.GetSize(); ++i) {
+				qc.Rz(i, acos(d * d));
+				qc.Ry(i, asin(d));
+			}
+			for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+				U_ent();
+				U_loc(*itr);
+			}
+			vector<int> v = qc.Detection();
+
+			for (vector<int>::iterator itr = v.begin() + 2; itr != v.end() - 1; ++itr) {
+				if ((itr - v.begin()) % 2 == 1) {
+					v[1] += *itr;
+				}
+				else {
+					v[0] += *itr;
+				}
+			}
+			double p0 = (double)v[0] / (double)(*(v.end() - 1));
+			double p1 = (double)v[1] / (double)(*(v.end() - 1));
+			cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
+			double z = p0 - p1;
+			text_data << d << ' ' << z << endl;
+		}
+	}
+
+	void QuantumMachineLearning::ShowThetas() {
+		ofstream text_data;
+		text_data.open("data/tehtas.csv");
+		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+			//U_ent();
+			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+				if (it != (*itr).end() - 1) {
+					text_data << *it << ",";
+				}
+				else {
+					text_data << *it << endl;
+				}
+
+			}
+		}
+	}
+
+	void QuantumMachineLearning::Data_Generating() {
+		ofstream text_data;
+		text_data.open("data/sin_curve.dat");
+
+		random_device rd;
+		default_random_engine eng(rd());
+		uniform_real_distribution<double> distr(0, 1);
+
+		for (int i = 0; i < 100; ++i) {
+			double x = distr(eng) * 2 - 1;
+			text_data << x << ' ';
+			double noise = (distr(eng) * 2 - 1) * 0.05;
+			double f_x = sin(x * _Pi) + noise;
+			text_data << f_x << endl;
+		}
+
 	}
 }

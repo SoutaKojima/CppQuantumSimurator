@@ -2,7 +2,7 @@
 
 namespace std
 {
-	void QuantumCircuit::Init(int n) {
+	void QuantumCircuit::Init() {
 		amp.clear();
 		complex a = a.set(1, 0);
 		amp[0] = a;
@@ -25,7 +25,7 @@ namespace std
 			cout << "Sum of Probability is " << prob << ", not 1 !" << endl;
 			exit(1);
 		}
-		cout << "Sum of Probability : " << prob << endl;
+		//cout << "Sum of Probability : " << prob << endl;
 
 
 		map<int, int> count;
@@ -43,8 +43,8 @@ namespace std
 
 		vector<int> v;
 		for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
-			cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << ':';
-			cout << (itr->second) << endl;
+			//cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << ':';
+			//cout << (itr->second) << endl;
 			v.push_back(itr->second);
 		}
 

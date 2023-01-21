@@ -2,6 +2,7 @@
 #include"QuantumAlgorithms.h"
 #include<time.h>
 #include<utility>
+#include<string>
 
 namespace std {
 	class QuantumMachineLearning
@@ -21,6 +22,9 @@ namespace std {
 		void U_loc(vector<double>);
 		void Loss();
 		void Theta_Reset();
+		void ShowRegression(int s);
+		void ShowThetas();
+		void Data_Generating();
 
 		QuantumMachineLearning(int n,int r,int e) :qc(n),rep(r),epoc(e) {
 			//qc.Init(2);

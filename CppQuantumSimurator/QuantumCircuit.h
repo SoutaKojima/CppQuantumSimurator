@@ -7,6 +7,7 @@
 #include<iomanip>
 #include<bitset>
 #include<set>
+#include<fstream>
 #include"complex.h"
 
 namespace std
@@ -17,7 +18,7 @@ namespace std
 		map<int, complex> amp;
 		int qc_size;
 	public:
-		void Init(int n);
+		void Init();
 		vector<int> Detection(int size, int n);
 		vector<int> Detection(int size);
 		vector<int> Detection();

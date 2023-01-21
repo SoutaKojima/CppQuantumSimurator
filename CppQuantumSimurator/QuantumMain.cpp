@@ -4,21 +4,19 @@ using namespace std;
 
 int main()
 {
-	ifstream text_data;
-	text_data.open("data/test.dat");
+	ofstream text_data;
+	text_data.open("data/sin_curve.dat");
 
-	vector<double> v;
-	double d;
-	while (text_data) {
-		text_data >> d;
-		cout << d << endl;
-		v.push_back(d);
-	}
-	v.erase(v.end() - 1);
-	cout << v.size() << endl;
+	random_device rd;
+	default_random_engine eng(rd());
+	uniform_real_distribution<double> distr(0, 1);
 
-	for (vector<double>::iterator itr = v.begin(); itr != v.end(); ++itr) {
-		cout << *itr << endl;
+	for (int i = 0; i < 100; ++i) {
+		double x = distr(eng) * 2 - 1;
+		text_data << x << ' ';
+		double noise = (distr(eng) * 2 - 1) * 0.015;
+		double f_x = sin(x) + noise;
+		text_data << f_x << endl;
 	}
 
 	return 0;

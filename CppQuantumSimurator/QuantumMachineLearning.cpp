@@ -18,13 +18,14 @@ namespace std {
 		for (int i = 0; i < epoc; ++i) {
 			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 				U_in(*itr);
+				for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
+					U_ent();
+					U_loc(*it);
+				}
+				//Loss();
 			}
 
-			for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
-				U_ent();
-				U_loc(*itr);
-			}
-			Loss();
+
 		}
 
 		return;
@@ -51,17 +52,18 @@ namespace std {
 		cout << "reset complete" << endl;
 		ShowRegression(0);
 
-		/*for (int i = 0; i < epoc; ++i) {
+		for (int i = 0; i < epoc; ++i) {
 			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 				U_in(*itr);
+				for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
+					U_ent();
+					U_loc(*it);
+				}
+				Loss(*itr);
 			}
-
-			for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
-				U_ent();
-				U_loc(*itr);
-			}
-			Loss();
-		}*/
+			cout << "epoc:" << i << endl;
+		}
+		ShowRegression(1);
 
 		return;
 
@@ -74,8 +76,8 @@ namespace std {
 
 	void QuantumMachineLearning::U_in(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, acos(v[i] * v[i]));
-			qc.Ry(i, asin(v[i]));
+			qc.Rz(i, acos(v[0] * v[0]));
+			qc.Ry(i, asin(v[0]));
 		}
 	}
 
@@ -94,23 +96,29 @@ namespace std {
 		}
 	}
 
-	void QuantumMachineLearning::Loss() {
+	void QuantumMachineLearning::Loss(vector<double> d) {
 		vector<int> v = qc.Detection();
-		for (int i = 2; i < qc.GetSize(); ++i) {
-			if (i & 1) {
-				v[1] += v[i];
+
+		for (vector<int>::iterator itr = v.begin() + 2; itr != v.end() - 1; ++itr) {
+			if ((itr - v.begin()) % 2 == 1) {
+				v[1] += *itr;
 			}
 			else {
-				v[0] += v[i];
+				v[0] += *itr;
 			}
 		}
-
-		double p0 = (double)v[0] / (double)v[qc.GetSize()];
-		double p1 = (double)v[1] / (double)v[qc.GetSize()];
-
+		double p0 = (double)v[0] / (double)(*(v.end() - 1));
+		double p1 = (double)v[1] / (double)(*(v.end() - 1));
+		//cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
 		double z = p0 - p1;
 
 		double eta = 0.01; //learning rate
+
+		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+				*it = (*it)  - (2 * z - d[1]);
+			}
+		}
 	}
 
 
@@ -157,7 +165,7 @@ namespace std {
 			}
 			double p0 = (double)v[0] / (double)(*(v.end() - 1));
 			double p1 = (double)v[1] / (double)(*(v.end() - 1));
-			cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
+			//cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
 			double z = p0 - p1;
 			text_data << d << ' ' << z << endl;
 		}

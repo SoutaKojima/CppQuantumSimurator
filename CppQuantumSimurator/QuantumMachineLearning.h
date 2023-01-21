@@ -20,13 +20,13 @@ namespace std {
 		void U_in(vector<double>);
 		void U_ent();
 		void U_loc(vector<double>);
-		void Loss();
+		void Loss(vector<double>);
 		void Theta_Reset();
 		void ShowRegression(int s);
 		void ShowThetas();
 		void Data_Generating();
 
-		QuantumMachineLearning(int n,int r,int e) :qc(n),rep(r),epoc(e) {
+		QuantumMachineLearning(int n, int r, int e) :qc(n), rep(r), epoc(e) {
 			//qc.Init(2);
 		};
 	};

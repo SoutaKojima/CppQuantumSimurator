@@ -31,7 +31,7 @@ namespace std {
 	}
 	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
 
-	void MachineLearningXRegression() {
+	void MachineLearningRegression() {
 
 	}
 	//ref:https://arxiv.org/ftp/arxiv/papers/1910/1910.14266.pdf
@@ -75,6 +75,10 @@ namespace std {
 
 		double p0 = (double)v[0] / (double)v[qc.GetSize()];
 		double p1 = (double)v[1] / (double)v[qc.GetSize()];
+
+		double z = p0 - p1;
+
+		double eta = 0.01; //learning rate
 	}
 
 

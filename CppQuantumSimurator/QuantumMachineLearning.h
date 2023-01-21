@@ -15,7 +15,7 @@ namespace std {
 		vector<vector<double>> data;
 		//vector < pair<pair<int, int>, int>> train;
 		void MachineLearningXOR();
-		void MachineLearningXRegression();
+		void MachineLearningRegression();
 		void U_in(vector<double>);
 		void U_ent();
 		void U_loc(vector<double>);

@@ -1,3 +1,2 @@
 ﻿  QuantumMain.cpp
-C:\Users\koji-\Documents\Git\CppQuantumSimurator\CppQuantumSimurator\QuantumMain.cpp(5,1): warning C4326: 'main' の戻り値の型には、'int' を使用してください。'void' は使用できません
-  CppQuantumSimurator.vcxproj -> C:\Users\koji-\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe
+  CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

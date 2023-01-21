@@ -1,13 +1,25 @@
 #include"QuantumMachineLearning.h"
+#include<fstream>
 using namespace std;
 
-void main()
+int main()
 {
-	QuantumMachineLearning qml(2, 2, 10);
+	ifstream text_data;
+	text_data.open("data/test.dat");
 
+	vector<double> v;
+	double d;
+	while (text_data) {
+		text_data >> d;
+		cout << d << endl;
+		v.push_back(d);
+	}
+	v.erase(v.end() - 1);
+	cout << v.size() << endl;
 
+	for (vector<double>::iterator itr = v.begin(); itr != v.end(); ++itr) {
+		cout << *itr << endl;
+	}
 
-	qml.qc.H(0);
-	qml.qc.Amplitude();
-
+	return 0;
 }

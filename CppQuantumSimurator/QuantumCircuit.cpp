@@ -75,7 +75,7 @@ namespace std
 		}
 		cout << "Sum of Probability : " << prob << endl;
 		cout << endl;
-		return;
+		return v;
 	}
 
 	vector<double> QuantumCircuit::Amplitude(int size) {

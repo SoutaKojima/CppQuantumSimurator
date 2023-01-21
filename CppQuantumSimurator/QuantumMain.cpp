@@ -15,7 +15,7 @@ int main()
 		double x = distr(eng) * 2 - 1;
 		text_data << x << ' ';
 		double noise = (distr(eng) * 2 - 1) * 0.015;
-		double f_x = sin(x) + noise;
+		double f_x = sin(x*_Pi) + noise;
 		text_data << f_x << endl;
 	}
 

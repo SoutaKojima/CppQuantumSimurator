@@ -57,9 +57,11 @@ namespace std {
 		for (int i = 0; i < epoc; ++i) {
 			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 				U_in(*itr);
+				U_ent();
 				for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
-					U_ent();
+
 					U_loc(*it);
+					U_ent();
 				}
 				Loss(*itr);
 			}
@@ -121,13 +123,35 @@ namespace std {
 		double eta = 0.05; //learning rate
 
 		double loss = (2 * z - d[1]) * (2 * z - d[1]) / 2;
-		cout << "Loss:" << loss << endl;
+		//cout << "Loss:" << loss << endl;
 
-		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
+		vector<double> v_pre;
+		for (vector < vector<double>>::iterator itr = data.end() - 1;; --itr) {
 			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
 				double tmp = (*it);
 				*it = tmp - eta * tmp * (2 * z - d[1]);
+				//v_pre.push_back(2 * z - d[1]);
 			}
+			//if (itr == data.end() - 1) {
+			//	for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+			//		double tmp = (*it);
+			//		*it = tmp - eta * tmp * (2 * z - d[1]);
+			//		v_pre.push_back(2 * z - d[1]);
+			//	}
+			//}
+			//else {
+			//	vector<double> v_tmp;
+			//	for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+			//		double tmp = (*it);
+			//		/**it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - d[1]);
+			//		v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - d[1]))*/;
+			//		*it = tmp - eta * tmp * (2 * z - d[1]);
+			//		v_pre.push_back(2 * z - d[1]);
+			//	}
+			//	v_pre.clear();
+			//	v_pre = v_tmp;
+			//}
+			if (itr == data.begin()) break;
 			//cout << "Loss:" << (2*z - d[1]) * (2 * z - d[1]) / 2 << endl;
 		}
 	}

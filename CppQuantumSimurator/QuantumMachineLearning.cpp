@@ -112,12 +112,14 @@ namespace std {
 		//cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
 		double z = p0 - p1;
 
-		double eta = 0.01; //learning rate
+		double eta = 0.05; //learning rate
 
 		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
 			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-				*it = (*it)  - (2 * z - d[1]);
+				double tmp = (*it);
+				*it = tmp - eta * (2 * z - d[1]) * tmp;
 			}
+			cout << "Loss:" << (2 * z - d[1]) * (2 * z - d[1]) / 2 << endl;
 		}
 	}
 

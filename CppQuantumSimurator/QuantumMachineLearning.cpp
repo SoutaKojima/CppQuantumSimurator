@@ -52,6 +52,8 @@ namespace std {
 		cout << "reset complete" << endl;
 		ShowRegression(0);
 
+		cout << "checkpoint a." << endl;
+
 		for (int i = 0; i < epoc; ++i) {
 			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 				U_in(*itr);
@@ -63,6 +65,9 @@ namespace std {
 			}
 			cout << "epoc:" << i << endl;
 		}
+
+		cout << "checkpoint b." << endl;
+
 		ShowRegression(1);
 
 		return;
@@ -97,29 +102,33 @@ namespace std {
 	}
 
 	void QuantumMachineLearning::Loss(vector<double> d) {
-		vector<int> v = qc.Detection();
+		map<int, int> v = qc.Detection();
 
-		for (vector<int>::iterator itr = v.begin() + 2; itr != v.end() - 1; ++itr) {
-			if ((itr - v.begin()) % 2 == 1) {
-				v[1] += *itr;
+		for (map<int, int>::iterator itr = v.begin(); itr != v.end(); ++itr) {
+			if ((itr->first) < 2) continue;
+			if ((itr->first) % 2 == 1) {
+				v[1] += itr->second;
 			}
 			else {
-				v[0] += *itr;
+				v[0] += itr->second;
 			}
 		}
-		double p0 = (double)v[0] / (double)(*(v.end() - 1));
-		double p1 = (double)v[1] / (double)(*(v.end() - 1));
-		//cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
+		double p0 = (double)v[0] / (double)v[-1];
+		double p1 = (double)v[1] / (double)v[-1];
+		cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 		double z = p0 - p1;
 
 		double eta = 0.05; //learning rate
 
+		double loss = (2 * z - d[1]) * (2 * z - d[1]) / 2;
+		cout << "Loss:" << loss << endl;
+
 		for (vector<vector<double>>::iterator itr = thetas.begin(); itr != thetas.end(); ++itr) {
 			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
 				double tmp = (*it);
-				*it = tmp - eta * (2 * z - d[1]) * tmp;
+				*it = tmp - eta * tmp * (2 * z - d[1]);
 			}
-			cout << "Loss:" << (2 * z - d[1]) * (2 * z - d[1]) / 2 << endl;
+			//cout << "Loss:" << (2*z - d[1]) * (2 * z - d[1]) / 2 << endl;
 		}
 	}
 
@@ -155,19 +164,23 @@ namespace std {
 				U_ent();
 				U_loc(*itr);
 			}
-			vector<int> v = qc.Detection();
+			map<int, int> v = qc.Detection();
 
-			for (vector<int>::iterator itr = v.begin() + 2; itr != v.end() - 1; ++itr) {
-				if ((itr - v.begin()) % 2 == 1) {
-					v[1] += *itr;
+
+			//cout << "checkpoint c." << endl;
+
+			for (map<int, int>::iterator itr = v.begin(); itr != v.end(); ++itr) {
+				if ((itr->first) < 2) continue;
+				if ((itr->first) % 2 == 1) {
+					v[1] += itr->second;
 				}
 				else {
-					v[0] += *itr;
+					v[0] += itr->second;
 				}
 			}
-			double p0 = (double)v[0] / (double)(*(v.end() - 1));
-			double p1 = (double)v[1] / (double)(*(v.end() - 1));
-			//cout << v[0] << ' ' << v[1] << ' ' << (*(v.end() - 1)) << endl;
+			double p0 = (double)v[0] / (double)v[-1];
+			double p1 = (double)v[1] / (double)v[-1];
+			//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 			double z = p0 - p1;
 			text_data << d << ' ' << z << endl;
 		}

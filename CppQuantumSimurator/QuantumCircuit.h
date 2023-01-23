@@ -19,9 +19,9 @@ namespace std
 		int qc_size;
 	public:
 		void Init();
-		vector<int> Detection(int size, int n);
-		vector<int> Detection(int size);
-		vector<int> Detection();
+		map<int, int> Detection(int size, int n);
+		map<int, int> Detection(int size);
+		map<int, int> Detection();
 		vector<complex> Amplitude();
 		vector<double> Amplitude(int n);
 		void I(int index);

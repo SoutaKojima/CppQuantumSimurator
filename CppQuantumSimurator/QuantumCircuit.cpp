@@ -9,7 +9,7 @@ namespace std
 		return;
 	}
 
-	vector<int> QuantumCircuit::Detection(int size, int n) {
+	map<int, int> QuantumCircuit::Detection(int size, int n) {
 		random_device rd;
 		default_random_engine eng(rd());
 		uniform_real_distribution<double> distr(0, 1);
@@ -40,24 +40,27 @@ namespace std
 				r -= (itr->second).norm();
 			}
 		}
+		count[-1] = n;
 
-		vector<int> v;
-		for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
-			//cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << ':';
-			//cout << (itr->second) << endl;
-			v.push_back(itr->second);
-		}
+		return count;
 
-		v.push_back(n);
+		//vector<int> v;
+		//for (map<int, int>::iterator itr = count.begin(); itr != count.end(); ++itr) {
+		//	//cout << bitset<16>(itr->first) << '(' << (itr->first) << ')' << ':';
+		//	//cout << (itr->second) << endl;
+		//	v.push_back(itr->second);
+		//}
 
-		return v;
+		//v.push_back(n);
+
+		//return v;
 	}
 
-	vector<int> QuantumCircuit::Detection(int size) {
+	map<int, int> QuantumCircuit::Detection(int size) {
 		return Detection(size, 10000);
 	}
 
-	vector<int> QuantumCircuit::Detection() {
+	map<int, int> QuantumCircuit::Detection() {
 		return Detection(qc_size, 10000);
 	}
 

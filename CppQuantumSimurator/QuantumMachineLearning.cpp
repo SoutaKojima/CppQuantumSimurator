@@ -67,6 +67,8 @@ namespace std {
 			}
 			cout << "epoc:" << i << endl;
 		}
+		
+
 
 		cout << "checkpoint b." << endl;
 
@@ -83,8 +85,8 @@ namespace std {
 
 	void QuantumMachineLearning::U_in(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, acos(v[0] * v[0]));
-			qc.Ry(i, asin(v[0]));
+			qc.Ry(i, acos(v[0] * v[0]));
+			qc.Rz(i, asin(v[0]));
 		}
 	}
 
@@ -98,8 +100,8 @@ namespace std {
 
 	void QuantumMachineLearning::U_loc(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, v[i] * v[i]);
-			qc.Ry(i, v[i]);
+			qc.Ry(i, v[i] * v[i]);
+			qc.Rz(i, v[i]);
 		}
 	}
 
@@ -125,33 +127,35 @@ namespace std {
 		double loss = (2 * z - d[1]) * (2 * z - d[1]) / 2;
 		//cout << "Loss:" << loss << endl;
 
+
 		vector<double> v_pre;
-		for (vector < vector<double>>::iterator itr = data.end() - 1;; --itr) {
+		for (vector < vector<double>>::iterator itr = thetas.end() - 1;; --itr) {
 			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
 				double tmp = (*it);
 				*it = tmp - eta * tmp * (2 * z - d[1]);
 				//v_pre.push_back(2 * z - d[1]);
 			}
-			//if (itr == data.end() - 1) {
-			//	for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-			//		double tmp = (*it);
-			//		*it = tmp - eta * tmp * (2 * z - d[1]);
-			//		v_pre.push_back(2 * z - d[1]);
-			//	}
-			//}
-			//else {
-			//	vector<double> v_tmp;
-			//	for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-			//		double tmp = (*it);
-			//		/**it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - d[1]);
-			//		v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - d[1]))*/;
-			//		*it = tmp - eta * tmp * (2 * z - d[1]);
-			//		v_pre.push_back(2 * z - d[1]);
-			//	}
-			//	v_pre.clear();
-			//	v_pre = v_tmp;
-			//}
-			if (itr == data.begin()) break;
+
+			if (itr == thetas.end() - 1) {
+				for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+					double tmp = (*it);
+					*it = tmp - eta * tmp * (2 * z - d[1]);
+					v_pre.push_back(2 * z - d[1]);
+				}
+			}
+			else {
+				vector<double> v_tmp;
+				for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
+					double tmp = (*it);
+					*it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - d[1]);
+					v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - d[1]));
+					//*it = tmp - eta * tmp * (2 * z - d[1]);
+					//v_pre.push_back(2 * z - d[1]);
+				}
+				v_pre.clear();
+				v_pre = v_tmp;
+			}
+			if (itr == thetas.begin()) break;
 			//cout << "Loss:" << (2*z - d[1]) * (2 * z - d[1]) / 2 << endl;
 		}
 	}
@@ -229,7 +233,7 @@ namespace std {
 
 	void QuantumMachineLearning::Data_Generating() {
 		ofstream text_data;
-		text_data.open("data/sin_curve.dat");
+		text_data.open("data/linear_curve.dat");
 
 		random_device rd;
 		default_random_engine eng(rd());
@@ -239,7 +243,7 @@ namespace std {
 			double x = distr(eng) * 2 - 1;
 			text_data << x << ' ';
 			double noise = (distr(eng) * 2 - 1) * 0.05;
-			double f_x = sin(x * _Pi) + noise;
+			double f_x = x + noise;
 			text_data << f_x << endl;
 		}
 

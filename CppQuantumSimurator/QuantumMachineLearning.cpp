@@ -57,7 +57,7 @@ namespace std {
 		for (int i = 0; i < epoc; ++i) {
 			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 				U_in(*itr);
-				U_ent();
+				//U_ent();
 				for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
 
 					U_loc(*it);
@@ -67,7 +67,7 @@ namespace std {
 			}
 			cout << "epoc:" << i << endl;
 		}
-		
+
 
 
 		cout << "checkpoint b." << endl;
@@ -137,11 +137,13 @@ namespace std {
 			}
 
 			if (itr == thetas.end() - 1) {
-				for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-					double tmp = (*it);
-					*it = tmp - eta * tmp * (2 * z - d[1]);
-					v_pre.push_back(2 * z - d[1]);
-				}
+				vector<double>::iterator it = (*itr).begin();
+				double tmp = (*it);
+				double grad = tmp * (2 * z - d[1]);
+
+				*it = tmp - eta * tmp * (2 * z - d[1]);
+				v_pre.push_back(2 * z - d[1]);
+
 			}
 			else {
 				vector<double> v_tmp;

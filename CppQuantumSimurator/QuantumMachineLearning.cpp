@@ -132,25 +132,25 @@ namespace std {
 		for (vector < vector<double>>::iterator itr = thetas.end() - 1;; --itr) {
 			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
 				double tmp = (*it);
-				*it = tmp - eta * tmp * (2 * z - d[1]);
+				*it = tmp - eta * tmp * (2 * z - p1);
 				//v_pre.push_back(2 * z - d[1]);
 			}
 
 			if (itr == thetas.end() - 1) {
 				vector<double>::iterator it = (*itr).begin();
 				double tmp = (*it);
-				double grad = tmp * (2 * z - d[1]);
+				double grad = tmp * (2 * z - p1);
 
-				*it = tmp - eta * tmp * (2 * z - d[1]);
-				v_pre.push_back(2 * z - d[1]);
+				*it = tmp - eta * tmp * (2 * z - p1);
+				v_pre.push_back(2 * z - p1);
 
 			}
 			else {
 				vector<double> v_tmp;
 				for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
 					double tmp = (*it);
-					*it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - d[1]);
-					v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - d[1]));
+					*it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - p1);
+					v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - p1));
 					//*it = tmp - eta * tmp * (2 * z - d[1]);
 					//v_pre.push_back(2 * z - d[1]);
 				}

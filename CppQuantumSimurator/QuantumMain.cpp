@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-	QuantumAlgorithms qa;
-	qa.DeutschJoszaAlgorithm();
+	QuantumMachineLearning qml(3, 3, 10);
+	qml.MachineLearningRegression();
 
 	return 0;
 }

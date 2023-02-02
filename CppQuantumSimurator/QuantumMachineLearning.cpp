@@ -35,7 +35,7 @@ namespace std {
 	void QuantumMachineLearning::MachineLearningRegression() {
 		vector<double> train;
 
-		ifstream ifs("data/sin_curve.dat");
+		ifstream ifs("data/linear_curve.dat");
 
 		double d;
 		while (ifs) {
@@ -85,8 +85,8 @@ namespace std {
 
 	void QuantumMachineLearning::U_in(vector<double> v) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Ry(i, acos(v[0] * v[0]));
-			qc.Rz(i, asin(v[0]));
+			qc.Rz(i, acos(v[0] * v[0]));
+			qc.Ry(i, asin(v[0]));
 		}
 	}
 
@@ -107,8 +107,11 @@ namespace std {
 
 	void QuantumMachineLearning::Loss(vector<double> d) {
 		map<int, int> v = qc.Detection();
+		ofstream text_data;
+		text_data.open("data/Loss.dat");
 
 		for (map<int, int>::iterator itr = v.begin(); itr != v.end(); ++itr) {
+			text_data << (itr->first) << ' ' << (itr->second) << endl;
 			if ((itr->first) < 2) continue;
 			if ((itr->first) % 2 == 1) {
 				v[1] += itr->second;
@@ -119,46 +122,36 @@ namespace std {
 		}
 		double p0 = (double)v[0] / (double)v[-1];
 		double p1 = (double)v[1] / (double)v[-1];
-		cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
+		//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 		double z = p0 - p1;
 
-		double eta = 0.05; //learning rate
+		double eta = 1.2; //learning rate
 
 		double loss = (2 * z - d[1]) * (2 * z - d[1]) / 2;
 		//cout << "Loss:" << loss << endl;
 
+		vector<double> v_pre(qc.GetSize(), 0);
+		for (int i = rep - 1; i > 0; --i) {
+			vector<double> v_tmp(qc.GetSize(), 0);
+			for (int j = 0; j < qc.GetSize(); ++j) {
 
-		vector<double> v_pre;
-		for (vector < vector<double>>::iterator itr = thetas.end() - 1;; --itr) {
-			for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-				double tmp = (*it);
-				*it = tmp - eta * tmp * (2 * z - p1);
-				//v_pre.push_back(2 * z - d[1]);
-			}
-
-			if (itr == thetas.end() - 1) {
-				vector<double>::iterator it = (*itr).begin();
-				double tmp = (*it);
-				double grad = tmp * (2 * z - p1);
-
-				*it = tmp - eta * tmp * (2 * z - p1);
-				v_pre.push_back(2 * z - p1);
-
-			}
-			else {
-				vector<double> v_tmp;
-				for (vector<double>::iterator it = (*itr).begin(); it != (*itr).end(); ++it) {
-					double tmp = (*it);
-					*it = tmp - eta * tmp * v_pre[it - (*itr).begin()] * (2 * z - p1);
-					v_tmp.push_back(v_pre[it - (*itr).begin()] * (2 * z - p1));
-					//*it = tmp - eta * tmp * (2 * z - d[1]);
-					//v_pre.push_back(2 * z - d[1]);
+				if (i == rep - 1) {
+					if (j != 0) continue;
+					for (int k = 0; k < qc.GetSize(); ++k) {
+						thetas[i - 1][k] -= eta * (2 * z - d[1]);
+						v_tmp[k] = eta * (z - d[1]);
+					}
 				}
-				v_pre.clear();
-				v_pre = v_tmp;
+				else {
+					for (int k = 0; k < qc.GetSize(); ++k) {
+						thetas[i - 1][k] -= eta * v_pre[k];
+						v_tmp[k] += eta * v_pre[k];
+					}
+				}
+
 			}
-			if (itr == thetas.begin()) break;
-			//cout << "Loss:" << (2*z - d[1]) * (2 * z - d[1]) / 2 << endl;
+			v_pre.clear();
+			v_pre = v_tmp;
 		}
 	}
 

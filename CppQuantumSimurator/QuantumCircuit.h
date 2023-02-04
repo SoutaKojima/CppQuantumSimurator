@@ -22,6 +22,7 @@ namespace std
 		map<int, int> Detection(int size, int n);
 		map<int, int> Detection(int size);
 		map<int, int> Detection();
+		map<int, int> SubDetection(int n);
 		vector<complex> Amplitude();
 		vector<double> Amplitude(int n);
 		void I(int index);

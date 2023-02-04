@@ -64,6 +64,23 @@ namespace std
 		return Detection(qc_size, 10000);
 	}
 
+	map<int, int> QuantumCircuit::SubDetection(int index) {
+		if (index < 0 or qc_size <= index) {
+			cout << "Index out of range!(SubDetection)" << endl;
+			exit(1);
+		}
+
+		map<int, int> mp;
+		map<int, int> d = Detection(qc_size, 10000);
+		for (map<int, int>::iterator itr = d.begin(); itr != d.end(); ++itr) {
+			if (itr->first == -1) mp[-1] = itr->second;
+			if ((itr->first) & (1 << index)) mp[1] += itr->second;
+			else mp[0] += itr->second;
+		}
+
+		return mp;
+	}
+
 	vector<complex> QuantumCircuit::Amplitude() {
 		double prob = 0;
 		vector<complex>v;

@@ -17,10 +17,10 @@ namespace std {
 		//vector < pair<pair<int, int>, int>> train;
 		void MachineLearningXOR();
 		void MachineLearningRegression();
-		void U_in(vector<double>);
+		void U_in(double);
 		void U_ent();
 		void U_loc(vector<double>);
-		void Loss(vector<double>);
+		double Loss(double);
 		void Theta_Reset();
 		void ShowRegression(int s);
 		void ShowThetas();

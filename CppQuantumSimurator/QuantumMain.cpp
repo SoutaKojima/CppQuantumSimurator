@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-	QuantumMachineLearning qml(3, 3, 10);
+	QuantumMachineLearning qml(2, 1, 100);
 	qml.MachineLearningRegression();
 
 	return 0;

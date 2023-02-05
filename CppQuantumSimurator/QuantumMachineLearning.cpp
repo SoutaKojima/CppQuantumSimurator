@@ -64,9 +64,13 @@ namespace std {
 					U_loc(*it);
 					U_ent();
 				}
-				loss_sum+=Loss((*itr)[1]);
+				loss_sum += Loss((*itr)[1]);
 			}
-			cout << "epoc:" << (i + 1) << " Loss:" << loss_sum/data.size() << endl;
+			cout << "epoc:" << (i + 1) << " Loss:" << loss_sum / data.size() << endl;
+			if (loss_sum / data.size() < 0.5) {
+				cout << "Finish Leaning." << endl;
+				break;
+			}
 		}
 
 
@@ -86,7 +90,7 @@ namespace std {
 
 	void QuantumMachineLearning::U_in(double x) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, acos(x*x));
+			qc.Rz(i, acos(x * x));
 			qc.Ry(i, asin(x));
 		}
 	}
@@ -116,7 +120,7 @@ namespace std {
 		//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 		double z = p0 - p1;
 
-		double eta = 0.3; //learning rate
+		double eta = 0.03; //learning rate
 
 		double loss = (2 * z - y) * (2 * z - y) / 2;
 
@@ -130,13 +134,13 @@ namespace std {
 					if (j != 0) continue;
 					for (int k = 0; k < qc.GetSize(); ++k) {
 						thetas[i][k] -= eta * (2 * z - y);
-						v_tmp[k] = eta * (z - y);
+						v_tmp[k] = eta * (2 * z - y);
 					}
 				}
 				else {
 					for (int k = 0; k < qc.GetSize(); ++k) {
-						thetas[i][k] -= eta * v_pre[k];
-						v_tmp[k] -= eta * v_pre[k];
+						thetas[i][j] -= eta * v_pre[k] * thetas[i + 1][k];
+						v_tmp[k] -= eta * v_pre[k] * thetas[i + 1][k];
 					}
 				}
 

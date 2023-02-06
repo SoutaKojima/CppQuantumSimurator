@@ -76,6 +76,7 @@ namespace std {
 
 
 		cout << "checkpoint b." << endl;
+		ShowThetas();
 
 		ShowRegression(1);
 
@@ -139,10 +140,15 @@ namespace std {
 				}
 				else {
 					for (int k = 0; k < qc.GetSize(); ++k) {
-						thetas[i][j] -= eta * v_pre[k] * thetas[i + 1][k];
-						v_tmp[k] -= eta * v_pre[k] * thetas[i + 1][k];
+						for (int l = 0; l < qc.GetSize(); ++l) {
+							thetas[i][j] -= eta * v_pre[k];
+							v_tmp[k] -= eta * v_pre[k];
+						}
+						
 					}
 				}
+
+				//thetas[i][j]-=eta* (2 * z - y);
 
 			}
 			v_pre.clear();
@@ -169,7 +175,7 @@ namespace std {
 		for (int i = 0; i < rep; ++i) {
 			vector<double> tmp;
 			for (int j = 0; j < qc.GetSize(); ++j) {
-				r = 2 * _Pi * distr(eng);
+				r = 2*_Pi*distr(eng);
 				tmp.push_back(r);
 			}
 			thetas.push_back(tmp);

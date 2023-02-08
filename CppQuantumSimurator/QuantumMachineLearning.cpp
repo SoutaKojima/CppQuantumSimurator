@@ -48,20 +48,15 @@ namespace std {
 		}
 		cout << "data size:" << data.size() << endl;
 
-		Theta_Reset();
-		cout << "reset complete" << endl;
-		ShowRegression(0);
-
-		cout << "checkpoint a." << endl;
-
-		double correct_rate = 0.2;
+		double correct_rate = 0.4;
 
 		double loss_sum = 1000000;
 		while (loss_sum / data.size() > correct_rate)
 		{
+			Theta_Reset();
+			ShowRegression(0);
 			for (int i = 0; i < epoc; ++i) {
 				loss_sum = 0;
-
 				for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 					qc.Init();
 					U_in((*itr)[0]);
@@ -82,7 +77,7 @@ namespace std {
 			}
 			cout << "Final Loss:" << loss_sum / data.size() << endl << endl;;
 			cout << "Reset Learning :" << endl;
-			loss_sum = 0;
+			//loss_sum = 0;
 		}
 
 

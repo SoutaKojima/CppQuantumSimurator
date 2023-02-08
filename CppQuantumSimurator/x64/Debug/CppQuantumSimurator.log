@@ -1,8 +1,5 @@
-﻿  QuantumAlgorithms.cpp
-  QuantumCircuit.cpp
-  QuantumMachineLearning.cpp
+﻿  QuantumMachineLearning.cpp
   QuantumMain.cpp
-  complex.cpp
   コードを生成中...
   LINK : 前回のインクリメンタル リンクで C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
   CppQuantumSimurator.vcxproj -> C:\Users\chemical\Documents\Git\CppQuantumSimurator\x64\Debug\CppQuantumSimurator.exe

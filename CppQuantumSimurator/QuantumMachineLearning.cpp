@@ -35,7 +35,7 @@ namespace std {
 	void QuantumMachineLearning::MachineLearningRegression() {
 		vector<double> train;
 
-		ifstream ifs("data/sin_curve.dat");
+		ifstream ifs("data/linear_curve.dat");
 
 		double d;
 		while (ifs) {
@@ -61,7 +61,7 @@ namespace std {
 		{
 			for (int i = 0; i < epoc; ++i) {
 				loss_sum = 0;
-				
+
 				for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
 					qc.Init();
 					U_in((*itr)[0]);
@@ -173,8 +173,8 @@ namespace std {
 				}
 				else {
 					for (int k = 0; k < qc.GetSize(); ++k) {
-						thetas[i][j] -= eta * v_pre[k];
-						v_tmp[k] -= eta * v_pre[k];
+						thetas[i][j] -= eta * v_pre[k] * abs(2 * z - y);
+						v_tmp[k] -= eta * v_pre[k] * abs(2 * z - y);
 					}
 				}
 
@@ -234,7 +234,7 @@ namespace std {
 			double p1 = (double)v[1] / (double)v[-1];
 			//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 			double z = p0 - p1;
-			text_data << d << ' ' << 2 * z+d << endl;
+			text_data << d << ' ' << z << endl;
 		}
 	}
 

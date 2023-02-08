@@ -20,6 +20,7 @@ namespace std {
 		void U_in(double);
 		void U_ent();
 		void U_loc(vector<double>);
+		void Minimize(double);
 		double Loss(double);
 		void Theta_Reset();
 		void ShowRegression(int s);

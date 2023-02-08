@@ -35,7 +35,7 @@ namespace std {
 	void QuantumMachineLearning::MachineLearningRegression() {
 		vector<double> train;
 
-		ifstream ifs("data/linear_curve.dat");
+		ifstream ifs("data/sin_curve.dat");
 
 		double d;
 		while (ifs) {
@@ -54,24 +54,37 @@ namespace std {
 
 		cout << "checkpoint a." << endl;
 
-		for (int i = 0; i < epoc; ++i) {
-			double loss_sum = 0;
-			for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
-				U_in((*itr)[0]);
-				//U_ent();
-				for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
+		double correct_rate = 0.2;
 
-					U_loc(*it);
+		double loss_sum = 1000000;
+		while (loss_sum / data.size() > correct_rate)
+		{
+			for (int i = 0; i < epoc; ++i) {
+				loss_sum = 0;
+				
+				for (vector<vector<double>>::iterator itr = data.begin(); itr != data.end(); ++itr) {
+					qc.Init();
+					U_in((*itr)[0]);
 					U_ent();
+					for (vector<vector<double>>::iterator it = thetas.begin(); it != thetas.end(); ++it) {
+
+						U_loc(*it);
+						U_ent();
+					}
+					Minimize((*itr)[1]);
+					loss_sum += Loss((*itr)[1]);
 				}
-				loss_sum += Loss((*itr)[1]);
+				cout << "epoc:" << (i + 1) << " Loss:" << loss_sum / data.size() << endl;
+				if (loss_sum / data.size() < correct_rate) {
+					cout << "Finish Leaning." << endl;
+					break;
+				}
 			}
-			cout << "epoc:" << (i + 1) << " Loss:" << loss_sum / data.size() << endl;
-			if (loss_sum / data.size() < 0.5) {
-				cout << "Finish Leaning." << endl;
-				break;
-			}
+			cout << "Final Loss:" << loss_sum / data.size() << endl << endl;;
+			cout << "Reset Learning :" << endl;
+			loss_sum = 0;
 		}
+
 
 
 
@@ -90,8 +103,9 @@ namespace std {
 
 	void QuantumMachineLearning::U_in(double x) {
 		for (int i = 0; i < qc.GetSize(); ++i) {
-			qc.Rz(i, acos(x * x));
 			qc.Ry(i, asin(x));
+			qc.Rz(i, acos(x * x));
+
 		}
 	}
 
@@ -112,23 +126,43 @@ namespace std {
 
 	double QuantumMachineLearning::Loss(double y) {
 		map<int, int> v = qc.SubDetection(0);
-		ofstream text_data;
-		text_data.open("data/Loss.dat");
 
 		double p0 = (double)v[0] / (double)v[-1];
 		double p1 = (double)v[1] / (double)v[-1];
 		//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 		double z = p0 - p1;
 
-		double eta = 0.03; //learning rate
+		double loss = abs(2 * z - y);
+		//double loss = (2 * z - y) * (2 * z - y) / 2;
 
-		double loss = (2 * z - y) * (2 * z - y) / 2;
+		return loss;
+	}
+
+	void QuantumMachineLearning::Minimize(double y) {
+		map<int, int> v = qc.SubDetection(0);
+		//ofstream text_data;
+		//text_data.open("data/Loss.dat");
+
+		double p0 = (double)v[0] / (double)v[-1];
+		double p1 = (double)v[1] / (double)v[-1];
+		//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
+		double z = p0 - p1;
+
+		double eta = 0.015; //learning rate
+
+		//double loss = (2 * z - y) * (2 * z - y) / 2;
 
 		vector<double> v_pre(qc.GetSize(), 0);
 		for (int i = rep - 1; i >= 0; --i) {
 			vector<double> v_tmp(qc.GetSize(), 0);
 			for (int j = 0; j < qc.GetSize(); ++j) {
-				//thetas[i][k] -= eta * (2 * z - y);
+				//cout << "coLoss : " << (2 * z - y) << endl;
+				/*if ((2 * z - y) > 0) {
+					thetas[i][j] -= eta*abs(2 * z - y);
+				}
+				else {
+					thetas[i][j] += eta * abs(2 * z - y);
+				}*/
 
 				if (i == rep - 1) {
 					if (j != 0) continue;
@@ -139,8 +173,8 @@ namespace std {
 				}
 				else {
 					for (int k = 0; k < qc.GetSize(); ++k) {
-						thetas[i][j] -= eta * v_pre[k] * thetas[i + 1][k];
-						v_tmp[k] -= eta * v_pre[k] * thetas[i + 1][k];
+						thetas[i][j] -= eta * v_pre[k];
+						v_tmp[k] -= eta * v_pre[k];
 					}
 				}
 
@@ -148,14 +182,6 @@ namespace std {
 			v_pre.clear();
 			v_pre = v_tmp;
 		}
-
-		map<int, int> res = qc.SubDetection(0);
-		double _p0 = (double)res[0] / (double)res[-1];
-		double _p1 = (double)res[1] / (double)res[-1];
-		double _z = _p0 - _p1;
-		double _loss = (2 * _z - y) * (2 * _z - y) / 2;
-		//cout << "Loss:" << _loss << endl;
-		return _loss;
 	}
 
 
@@ -208,7 +234,7 @@ namespace std {
 			double p1 = (double)v[1] / (double)v[-1];
 			//cout << v[0] << ' ' << v[1] << ' ' << v[-1] << endl;
 			double z = p0 - p1;
-			text_data << d << ' ' << z << endl;
+			text_data << d << ' ' << 2 * z+d << endl;
 		}
 	}
 

@@ -4,14 +4,14 @@
 #include<utility>
 
 namespace std {
-	class QuantumAlgorithms
-	{
-	public:
-		void DeutschJoszaAlgorithm();
-		void GroverAlgorithm();
-		void SudokuAlgorithm();
-		void ShorAlgorithm();
-	};
+    class QuantumAlgorithms
+    {
+    public:
+        void DeutschJoszaAlgorithm();
+        void GroverAlgorithm();
+        void SudokuAlgorithm();
+        void ShorAlgorithm();
+    };
 
 }
 
